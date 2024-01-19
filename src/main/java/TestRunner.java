@@ -44,48 +44,60 @@ public class TestRunner {
         int exitCriteria = 1;
         while (exitCriteria == 1) {
             if (answer.equals("A")) {
-                optionSelector.remove(0);
-                int currentOption = optionSelector.size() - 1;
-                if (QuestionOptions.getOptions().get(question)[optionSelector.get(currentOption)].equals(Answers.getAnswers().get(question))) {
+                optionSelector.remove((Integer) 0);
+                if (QuestionOptions.getOptions().get(question)[0].equals(Answers.getAnswers().get(question))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
                     // pass the optionSelecter to the printer
                     questionPrinter(question,optionSelector);
+                    if (optionSelector.size() == 1) {
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        break;
+                    }
                     answer = scanner.nextLine().toUpperCase();
                 }
             } else if (answer.equals("B")) {
-                optionSelector.remove(1);
-                int currentOption = optionSelector.size() - 1;
-                if (QuestionOptions.getOptions().get(question)[optionSelector.get(currentOption)].equals(Answers.getAnswers().get(question))) {
+                optionSelector.remove((Integer) 1);
+                if (QuestionOptions.getOptions().get(question)[1].equals(Answers.getAnswers().get(question))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
                     questionPrinter(question,optionSelector);
+                    if (optionSelector.size() == 1) {
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        break;
+                    }
                     answer = scanner.nextLine().toUpperCase();
                 }
             } else if (answer.equals("C")) {
-                optionSelector.remove(2);
-                int currentOption = optionSelector.size() - 1;
-                if (QuestionOptions.getOptions().get(question)[optionSelector.get(currentOption)].equals(Answers.getAnswers().get(question))) {
+                optionSelector.remove((Integer) 2);
+                if (QuestionOptions.getOptions().get(question)[2].equals(Answers.getAnswers().get(question))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
                     questionPrinter(question,optionSelector);
+                    if (optionSelector.size() == 1) {
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        break;
+                    }
                     answer = scanner.nextLine().toUpperCase();
                 }
             } else if (answer.equals("D")) {
-                optionSelector.remove(3);
-                int currentOption = optionSelector.size() - 1;
-                if (QuestionOptions.getOptions().get(question)[optionSelector.get(currentOption)].equals(Answers.getAnswers().get(question))) {
+                optionSelector.remove((Integer) 3);
+                if (QuestionOptions.getOptions().get(question)[3].equals(Answers.getAnswers().get(question))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
                     questionPrinter(question,optionSelector);
+                    if (optionSelector.size() == 1) {
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        break;
+                    }
                     answer = scanner.nextLine().toUpperCase();
                 }
             } else {
@@ -93,7 +105,6 @@ public class TestRunner {
                 answer = scanner.nextLine().toUpperCase();
             }
         }
-        System.out.println("Your answer is: " + getInitialOptions(question).get(optionSelector.get(optionSelector.size() - 1)));
         System.out.println("----------------------------------------------");
         System.out.println("If your answer was this then you are correct:");
 
