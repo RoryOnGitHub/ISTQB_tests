@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Collections;
+import java.util.*;
+
 public class TestRunner {
     QuestionBank Questions = new QuestionBank();
     QuestionOptions Options = new QuestionOptions();
@@ -16,17 +14,19 @@ public class TestRunner {
         System.out.println("How many subjects would you like? ");
         int usersSubjectCount = scanner.nextInt();
 
-        // Add a subject selector
-
-        // Getting the question
-        String[] k1QuestionsArray = QuestionBank.getK1_questions();
-        String[] k2QuestionsArray = QuestionBank.getK2_questions();
-
         // Getting a good split of questions per subject
         questionSubjectSplit(usersTotalQuestions, usersSubjectCount);
 
+        //Gets array of all subjects
+//        subjectSetToArray();
 
-        System.out.println(Arrays.toString(QuestionBank.getQuestionsBySubject().get("Norse")));
+        //subject printer (The subjects will be the papers i.e., 2018 version)
+        subjectPrinter(subjectSetToArray());
+
+        // Add a subject selector
+
+        // Getting the question
+
 
         // printing out the questions from randomizer (so far it occasionally repeats itself)
         System.out.println("HERE--------------------------");
@@ -176,4 +176,44 @@ public class TestRunner {
         }
         return groupSplit;
     }
+
+    public static ArrayList<String> subjectSetToArray() {
+        ArrayList<String> subjects = new ArrayList<>();
+        Set<String> questionSubjects = QuestionBank.getQuestionsBySubject().keySet();
+        for(int i = 0; i < questionSubjects.toArray().length; i++) {
+            subjects.add(questionSubjects.toArray()[i].toString());
+        }
+        return subjects;
+    }
+
+    public static ArrayList<String> subjectPrinter(ArrayList<String> subjects) {
+        ArrayList<String> chosenSubjects = new ArrayList<>();
+        while(true) {
+            for (int i = 0; i < 4; i++) {
+                System.out.println("****************************************************************");
+            }
+            System.out.println("----------------------------------------------");
+            System.out.println("Select which subjects you would like in your test:");
+            System.out.println("----------------------------------------------");
+            for (int i = 0; i < subjects.size(); i++) {
+                System.out.println(i + ": " + subjects.get(i));
+            }
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Select the subject by its allocated number (eg: 1):");
+            int selectedSubject = Integer.parseInt(scanner.nextLine());
+            if(selectedSubject > subjects.size()) {
+                System.out.println("Subject not found, please use select a number within range");
+            } else {
+                chosenSubjects.add(subjects.get(selectedSubject));
+                subjects.remove(subjects.get(selectedSubject));
+            }
+            System.out.println("Would you like to add anymore subjects? (Y/N)");
+            String continueChoice = scanner.nextLine();
+            if (continueChoice.equalsIgnoreCase("N") || subjects.size() == 0) {
+                break;
+            }
+        }
+        return chosenSubjects;
+    }
+
 }
