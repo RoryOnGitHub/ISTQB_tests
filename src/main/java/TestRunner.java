@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Collections;
 public class TestRunner {
@@ -8,142 +9,125 @@ public class TestRunner {
 
     public static void main(String[] args) {
 
+        Scanner scanner = new Scanner(System.in);
 
-        QuestionBank Questions = new QuestionBank();
-        QuestionOptions Options = new QuestionOptions();
-        Answers QuestionAnswers = new Answers();
+        System.out.println("How many questions in total would you like? ");
+        int usersTotalQuestions = scanner.nextInt();
+        System.out.println("How many subjects would you like? ");
+        int usersSubjectCount = scanner.nextInt();
+
+        // Add a subject selector
 
         // Getting the question
-        String[] k1QuestionsArray = Questions.getK1_questions();
+        String[] k1QuestionsArray = QuestionBank.getK1_questions();
+        String[] k2QuestionsArray = QuestionBank.getK2_questions();
+
+        // Getting a good split of questions per subject
+        questionSubjectSplit(usersTotalQuestions, usersSubjectCount);
 
 
-        // A loop to make sure each question is visually separate
+        System.out.println(Arrays.toString(QuestionBank.getQuestionsBySubject().get("Norse")));
 
+        // printing out the questions from randomizer (so far it occasionally repeats itself)
+        System.out.println("HERE--------------------------");
+        for (String i : questionRandomizer(2, QuestionBank.getQuestionsBySubject().get("Norse"))) {
+            System.out.println(i);
+        }
 
         // Looping through the ArrayList of random questions
-        String question = "";
-        for (int i = 0; i < questionRandomizer(2).size(); i++) {
-            question = questionRandomizer(2).get(i);
+        String currentQuestion = "";
+        for (int i = 0; i < questionRandomizer(2, QuestionBank.getQuestionsBySubject().get("Norse")).size(); i++) {
+            currentQuestion = questionRandomizer(2, QuestionBank.getQuestionsBySubject().get("Norse")).get(i);
         }
 
+        // Method call for printing out the question
+        questionPrinter(currentQuestion,null);
 
-        // Getting the options from the array (turning this into a method you might want to think about amount of times run and the optionselector
-        for (int i = 0; i < getInitialOptions(question).size(); i++) {
-            System.out.println(getInitialOptions(question).get(i));
-        }
-        questionPrinter(question,null);
-    // Deal with say option A if it has been removed etc and if so when it is re-entered then its ignored.
-        Scanner scanner = new Scanner(System.in);
+        // Deal with say option A if it has been removed etc and if so when it is re-entered then its ignored.
+
         System.out.println("Please type your answer here (A,B,C,D): ");
-        String answer = scanner.nextLine().toUpperCase();
-        // Needs the ability to decide if it is correct or incorrect
+        String usersAnswer = scanner.nextLine().toUpperCase();
         ArrayList<Integer> optionSelector = new ArrayList<Integer>();
-        //Current breaks here as it's now an array of size 3
         Collections.addAll(optionSelector,0,1,2,3);
-        System.out.println(optionSelector);
-        int exitCriteria = 1;
-        while (exitCriteria == 1) {
-            if (answer.equals("A")) {
+
+
+        while (true) {
+            if (usersAnswer.equals("A")) {
                 optionSelector.remove((Integer) 0);
-                if (QuestionOptions.getOptions().get(question)[0].equals(Answers.getAnswers().get(question))) {
+                if (QuestionOptions.getOptions().get(currentQuestion)[0].equals(Answers.getAnswers().get(currentQuestion))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
-                    // pass the optionSelecter to the printer
-                    questionPrinter(question,optionSelector);
+                    questionPrinter(currentQuestion,optionSelector);
                     if (optionSelector.size() == 1) {
-                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                         break;
                     }
-                    answer = scanner.nextLine().toUpperCase();
+                    usersAnswer = scanner.nextLine().toUpperCase();
                 }
-            } else if (answer.equals("B")) {
+            } else if (usersAnswer.equals("B")) {
                 optionSelector.remove((Integer) 1);
-                if (QuestionOptions.getOptions().get(question)[1].equals(Answers.getAnswers().get(question))) {
+                if (QuestionOptions.getOptions().get(currentQuestion)[1].equals(Answers.getAnswers().get(currentQuestion))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
-                    questionPrinter(question,optionSelector);
+                    questionPrinter(currentQuestion,optionSelector);
                     if (optionSelector.size() == 1) {
-                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                         break;
                     }
-                    answer = scanner.nextLine().toUpperCase();
+                    usersAnswer = scanner.nextLine().toUpperCase();
                 }
-            } else if (answer.equals("C")) {
+            } else if (usersAnswer.equals("C")) {
                 optionSelector.remove((Integer) 2);
-                if (QuestionOptions.getOptions().get(question)[2].equals(Answers.getAnswers().get(question))) {
+                if (QuestionOptions.getOptions().get(currentQuestion)[2].equals(Answers.getAnswers().get(currentQuestion))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
-                    questionPrinter(question,optionSelector);
+                    questionPrinter(currentQuestion,optionSelector);
                     if (optionSelector.size() == 1) {
-                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                         break;
                     }
-                    answer = scanner.nextLine().toUpperCase();
+                    usersAnswer = scanner.nextLine().toUpperCase();
                 }
-            } else if (answer.equals("D")) {
+            } else if (usersAnswer.equals("D")) {
                 optionSelector.remove((Integer) 3);
-                if (QuestionOptions.getOptions().get(question)[3].equals(Answers.getAnswers().get(question))) {
+                if (QuestionOptions.getOptions().get(currentQuestion)[3].equals(Answers.getAnswers().get(currentQuestion))) {
                     System.out.println("That is correct!");
                     break;
                 } else {
                     System.out.println("That is not correct try again:");
-                    questionPrinter(question,optionSelector);
+                    questionPrinter(currentQuestion,optionSelector);
                     if (optionSelector.size() == 1) {
-                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(question));
+                        System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                         break;
                     }
-                    answer = scanner.nextLine().toUpperCase();
+                    usersAnswer = scanner.nextLine().toUpperCase();
                 }
             } else {
                 System.out.println("The answer you provided was neither A, B, C or D, please enter one of these letters");
-                answer = scanner.nextLine().toUpperCase();
+                usersAnswer = scanner.nextLine().toUpperCase();
             }
         }
+
         System.out.println("----------------------------------------------");
         System.out.println("If your answer was this then you are correct:");
 
         // Getting the answers
-        System.out.println(Answers.getAnswers().get(question));
+        System.out.println(Answers.getAnswers().get(currentQuestion));
 
-
-        // Randomize test from the questions in the bank
-        // must select certain amount per category
-        // Shows question and possible answers
-        // When answered if right it logs it as correct on your score then moves on
-        // When incorrect it removes the incorrect answer and prompts you again
-        // Continues until correct or the last option is left
-        // Gives you a score at the end
-        // Based on categories got wrong it tells you where to focus
-
-        // Have the questions in Arrays which are in categories
-        // Then have a question details hash with the options and answer
-
-        // Distinguish between ISTQB versions, 2018 etc
-
-
-        // For removing questions A would map to index 0
-
-
-        // The user requirements
-        // Be able to specify the amount of questions
-        // Have option to be able to specify the type of questions can skip (assume even split if default)
-        // Have the results shown at the end, showing both score and areas that need focus
-
-        //Have a loop, or even a class that deals with the graphic output (messages and layout etc)
     }
 
     // Creating an ArrayList to hold the questions randomly grabbed
-    public static ArrayList<String> questionRandomizer(int num_of_questions) {
+    public static ArrayList<String> questionRandomizer(int num_of_questions, String[] questionArray) {
         ArrayList<String> randomQuestions = new ArrayList<String>();
         for (int i = 0; i < num_of_questions; i++) {
-            int randomIndex = (int) (Math.random() * QuestionBank.getK1_questions().length);
-            String randomElement = QuestionBank.getK1_questions()[randomIndex];
+            int randomIndex = (int) (Math.random() * questionArray.length);
+            String randomElement = questionArray[randomIndex];
             randomQuestions.add(randomElement);
         }
         return randomQuestions;
@@ -175,5 +159,21 @@ public class TestRunner {
                 System.out.println(getInitialOptions(currentQuestion).get(i));
             }
         }
+    }
+
+    public static ArrayList<Integer> questionSubjectSplit(int totalAmountQuestions, int subjects) {
+        int remainder = totalAmountQuestions % subjects;
+        ArrayList<Integer> groupSplit = new ArrayList<>();
+        if (remainder != 0) {
+            for(int i = 0; i < subjects - 1; i++) {
+                groupSplit.add((totalAmountQuestions - remainder) / subjects);
+            }
+            groupSplit.add(((totalAmountQuestions - remainder) / subjects) + remainder);
+        } else {
+            for(int i = 0; i < subjects; i++) {
+                groupSplit.add(totalAmountQuestions / subjects);
+            }
+        }
+        return groupSplit;
     }
 }
