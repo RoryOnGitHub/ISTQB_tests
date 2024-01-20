@@ -38,10 +38,11 @@ public class TestRunner {
             String usersAnswer = scanner.nextLine().toUpperCase();
             ArrayList<Integer> optionSelector = new ArrayList<Integer>();
             Collections.addAll(optionSelector, 0, 1, 2, 3);
-
+            ArrayList<String> choices = new ArrayList<String>();
+            Collections.addAll(choices, "A", "B", "C", "D");
             while (true) {
                 if (usersAnswer.equals("A")) {
-                    optionSelector.remove((Integer) 0);
+                    optionSelector.remove((Integer) 0); // Could use remove((Integer)choices.indexOf(usersAnswer)
                     if (QuestionOptions.getOptions().get(currentQuestion)[0].equals(Answers.getAnswers().get(currentQuestion))) {
                         System.out.println("That is correct!");
                         break;
@@ -101,7 +102,8 @@ public class TestRunner {
                     usersAnswer = scanner.nextLine().toUpperCase();
                 }
             }
-
+            // Grab the question (to get its category),number of tries
+            // Get chosen destination to save the report (validate this destination beforehand)
             System.out.println("----------------------------------------------");
             System.out.println("If your answer was this then you are correct:");
 
