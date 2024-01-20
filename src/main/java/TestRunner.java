@@ -26,10 +26,13 @@ public class TestRunner {
         }
         System.out.println("TEST--------------------------");
 
+        // Have a HashMap initiated here to collect the question, attempts and question category etc for the report
+
         // The outer loop which Loops through the ArrayList of randomly compiled questions
-        String currentQuestion = "";
         for (int i = 0; i < questions.size(); i++) {
-            currentQuestion = questions.get(i);
+            String currentQuestion = questions.get(i);
+            int questionAttempts = 0;
+            String questionCategory = "";   // Needs a HashMap retrieval
 
             // Initial method call for printing out the question
             questionPrinter(currentQuestion, null);
@@ -40,57 +43,19 @@ public class TestRunner {
             Collections.addAll(optionSelector, 0, 1, 2, 3);
             ArrayList<String> choices = new ArrayList<String>();
             Collections.addAll(choices, "A", "B", "C", "D");
+
             while (true) {
-                if (usersAnswer.equals("A")) {
-                    optionSelector.remove((Integer) 0); // Could use remove((Integer)choices.indexOf(usersAnswer)
-                    if (QuestionOptions.getOptions().get(currentQuestion)[0].equals(Answers.getAnswers().get(currentQuestion))) {
+                if (usersAnswer.equals("A") || usersAnswer.equals("B") || usersAnswer.equals("C") || usersAnswer.equals("D")) {
+                    int indexOfAnswer = choices.indexOf(usersAnswer);
+                    optionSelector.remove((Integer)indexOfAnswer);
+                    if (QuestionOptions.getOptions().get(currentQuestion)[indexOfAnswer].equals(Answers.getAnswers().get(currentQuestion))) {
                         System.out.println("That is correct!");
                         break;
                     } else {
-                        System.out.println("That is not correct try again:");
+                        questionAttempts++;
                         questionPrinter(currentQuestion, optionSelector);
-                        if (optionSelector.size() == 1) {
-                            System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
-                            break;
-                        }
-                        usersAnswer = scanner.nextLine().toUpperCase();
-                    }
-                } else if (usersAnswer.equals("B")) {
-                    optionSelector.remove((Integer) 1);
-                    if (QuestionOptions.getOptions().get(currentQuestion)[1].equals(Answers.getAnswers().get(currentQuestion))) {
-                        System.out.println("That is correct!");
-                        break;
-                    } else {
                         System.out.println("That is not correct try again:");
-                        questionPrinter(currentQuestion, optionSelector);
-                        if (optionSelector.size() == 1) {
-                            System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
-                            break;
-                        }
-                        usersAnswer = scanner.nextLine().toUpperCase();
-                    }
-                } else if (usersAnswer.equals("C")) {
-                    optionSelector.remove((Integer) 2);
-                    if (QuestionOptions.getOptions().get(currentQuestion)[2].equals(Answers.getAnswers().get(currentQuestion))) {
-                        System.out.println("That is correct!");
-                        break;
-                    } else {
-                        System.out.println("That is not correct try again:");
-                        questionPrinter(currentQuestion, optionSelector);
-                        if (optionSelector.size() == 1) {
-                            System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
-                            break;
-                        }
-                        usersAnswer = scanner.nextLine().toUpperCase();
-                    }
-                } else if (usersAnswer.equals("D")) {
-                    optionSelector.remove((Integer) 3);
-                    if (QuestionOptions.getOptions().get(currentQuestion)[3].equals(Answers.getAnswers().get(currentQuestion))) {
-                        System.out.println("That is correct!");
-                        break;
-                    } else {
-                        System.out.println("That is not correct try again:");
-                        questionPrinter(currentQuestion, optionSelector);
+                        System.out.println("Attempts left: " + (optionSelector.size() - questionAttempts)); // Currently not getting the correct value on second attempt
                         if (optionSelector.size() == 1) {
                             System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                             break;
