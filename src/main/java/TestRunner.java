@@ -14,19 +14,18 @@ public class TestRunner {
         System.out.println("How many subjects would you like? ");
         int usersSubjectCount = scanner.nextInt();
 
-        // Getting a good split of questions per subject
-        questionSubjectSplit(usersTotalQuestions, usersSubjectCount);
-
         //Gets array of all subjects
 //        subjectSetToArray();
 
-        //subject printer (The subjects will be the papers i.e., 2018 version)
-        subjectPrinter(subjectSetToArray());
+        //subject printer (The subjects will be the papers i.e., 2018 version) returns an array of chosen subjects
+        ArrayList<String> result = subjectPrinter(subjectSetToArray());
 
-        // Add a subject selector
+        // Getting a good split of questions per subject returning this as an array
+        ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size());
 
-        // Getting the question
 
+        // Randomizer2 takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions
+        ArrayList<String> questions = questionRandomizer2(split, result);
 
         // printing out the questions from randomizer (so far it occasionally repeats itself)
         System.out.println("HERE--------------------------");
@@ -34,7 +33,7 @@ public class TestRunner {
             System.out.println(i);
         }
 
-        // Looping through the ArrayList of random questions
+        // Looping through the ArrayList of random questions NEEDS TO BE NESTED ABOVE WHILE LOOP
         String currentQuestion = "";
         for (int i = 0; i < questionRandomizer(2, QuestionBank.getQuestionsBySubject().get("Norse")).size(); i++) {
             currentQuestion = questionRandomizer(2, QuestionBank.getQuestionsBySubject().get("Norse")).get(i);
@@ -161,7 +160,7 @@ public class TestRunner {
         }
     }
 
-    public static ArrayList<Integer> questionSubjectSplit(int totalAmountQuestions, int subjects) {
+    public static ArrayList<Integer> questionSubjectSplit(int totalAmountQuestions, int subjects) { // Change subjects to ArrayList<String>
         int remainder = totalAmountQuestions % subjects;
         ArrayList<Integer> groupSplit = new ArrayList<>();
         if (remainder != 0) {
@@ -214,6 +213,21 @@ public class TestRunner {
             }
         }
         return chosenSubjects;
+    }
+
+    public static ArrayList<String> questionRandomizer2(ArrayList<Integer> splitOfSubjects, ArrayList<String> subjects) {
+        ArrayList<String> randomQuestions = new ArrayList<String>();
+        int splitIndexer = 0;
+        for(String subject : subjects) {
+            String[] subjectQuestions = QuestionBank.getQuestionsBySubject().get(subject);
+            for (int i = 0; i < splitOfSubjects.get(splitIndexer); i++) {                   // FAILURE HERE
+                int randomIndex = (int) (Math.random() * subjectQuestions.length);
+                String randomElement = subjectQuestions[randomIndex];
+                randomQuestions.add(randomElement);
+            }
+            splitIndexer++;
+        }
+        return randomQuestions;
     }
 
 }
