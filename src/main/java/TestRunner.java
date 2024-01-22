@@ -5,19 +5,47 @@ public class TestRunner {
 
     public static void main(String[] args) {
 
+        boolean valid = false;
+        int usersTotalQuestions = 0;
         Scanner scanner = new Scanner(System.in);
+        while (!valid) {
+            System.out.println("How many questions in total would you like? (Choose a number between 1 and 40)");
+            try {
+                usersTotalQuestions = scanner.nextInt();
+                valid = true;
+                if (usersTotalQuestions > 0 && usersTotalQuestions <= 40) {
+                    break;
+                } else {
+                    System.out.println("You must choose a number between 0 and 40 ");
+                }
+            } catch (InputMismatchException e){
+                System.out.println("You must choose a number between 0 and 40 ");      // Continues to loop needs fixing
+                valid = false;
+            }
+        }
 
-        System.out.println("How many questions in total would you like? ");
-        int usersTotalQuestions = scanner.nextInt();
 
-        // Subject printer (The subjects will be the papers i.e., 2018 version) returns an array of chosen subjects
-        ArrayList<String> result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
+        ArrayList<String> questions = null;
+        while (true) {
+            System.out.println("Would you like to choose your own subjects? (Y/N)? ");
+            String subjectOption = scanner.nextLine();
+            if (subjectOption.equalsIgnoreCase("N")) {
+                // Default option for subject selection
+                questions = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
+                break;
+            } else if (subjectOption.equalsIgnoreCase("Y")){
+                // Subject printer (The subjects will be the papers i.e., 2018 version) returns an array of chosen subjects
+                ArrayList<String> result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
 
-        // Getting a good split of questions per subject returning this as an array
-        ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size());
+                // Getting a good split of questions per subject returning this as an array
+                ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size());
 
-        // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions
-        ArrayList<String> questions = questionRandomizer(split, result);
+                // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
+                questions = questionRandomizer(split, result);
+                break;
+            }
+        }
+
 
         // TESTING PURPOSES printing out the randomized questions (so far it occasionally repeats itself)
         System.out.println("TEST--------------------------");
@@ -141,11 +169,6 @@ public class TestRunner {
                 break;
             }
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Would you like to continue adding subjects? (Y/N)");
-            String continueChoice = scanner.nextLine();
-            if (continueChoice.equalsIgnoreCase("N")) {
-                break;
-            }
             System.out.println("----------------------------------------------");
             System.out.println("Select which subjects you would like in your test:");
             System.out.println("----------------------------------------------");
@@ -159,6 +182,14 @@ public class TestRunner {
             } else {
                 chosenSubjects.add(subjects.get(selectedSubject));
                 subjects.remove(subjects.get(selectedSubject));
+            }
+            if (subjects.size() == 0) {
+                break;
+            }
+            System.out.println("Would you like to continue adding subjects? (Y/N)");
+            String continueChoice = scanner.nextLine();
+            if (continueChoice.equalsIgnoreCase("N")) {
+                break;
             }
         }
         return chosenSubjects;
@@ -179,6 +210,34 @@ public class TestRunner {
             splitIndexer++;
         }
         return randomQuestions;
+    }
+    // Takes in a phrase, an array of chosenSubjects and the total questions and returns a choice for another conditional statement to interpret
+    public static int quitOrContinueOptions(String phrase, ArrayList<String> chosenSubjects, int totalQuestions) {
+        int returnOption = 0; // 1 = continue; 2 = break; (when subject added),  3 = break; (when no subject added)
+        Scanner scanner = new Scanner(System.in);
+        System.out.printf("Would you like to %s? (Y/N)", phrase);
+        String continueChoice = scanner.nextLine();
+        if (continueChoice.equalsIgnoreCase("N")) {
+            returnOption = 2;   // Will break anyway if just 1 subject is selected etc
+            if (phrase.equals("add a subject") && chosenSubjects == null) {
+                returnOption = 3;
+            }
+        } else if (continueChoice.equalsIgnoreCase("Y")) {
+            returnOption = 1;
+        }
+        return returnOption;
+    }
+    // Takes in all the subjects (subjectsSetToArray) and the total questions, if total questions is less than subject count it does 1 question per subject else it splits them evenly
+    public static ArrayList<String> defaultSubjects(ArrayList<String> subjectsArray, int totalQuestions) {
+        ArrayList<String> defaultChoices = new ArrayList<String>();
+        if (subjectsArray.size() <= totalQuestions) {
+            for(int i = 0; i < totalQuestions; i++) {
+                defaultChoices.add(subjectsArray.get(i));
+        }
+            return defaultChoices;
+        } else {
+            return questionRandomizer(questionSubjectSplit(totalQuestions, subjectsArray.size()), subjectsArray);
+        }
     }
 
 }
