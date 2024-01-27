@@ -5,22 +5,20 @@ public class TestRunner {
 
     public static void main(String[] args) {
 
-        boolean valid = false;
         int usersTotalQuestions = 0;
         Scanner scanner = new Scanner(System.in);
-        while (!valid) {
+        while (true) {
             System.out.println("How many questions in total would you like? (Choose a number between 1 and 40)");
             try {
                 usersTotalQuestions = scanner.nextInt();
-                valid = true;
                 if (usersTotalQuestions > 0 && usersTotalQuestions <= 40) {
                     break;
                 } else {
                     System.out.println("You must choose a number between 0 and 40 ");
                 }
             } catch (InputMismatchException e){
-                System.out.println("You must choose a number between 0 and 40 ");      // Continues to loop needs fixing
-                valid = false;
+                System.out.println("You must choose a number between 0 and 40 ");
+                scanner.nextLine(); // Consumes the enter after inputting an integer, else previous input integer request consumes the enter
             }
         }
 
@@ -43,6 +41,8 @@ public class TestRunner {
                 // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
                 questions = questionRandomizer(split, result);
                 break;
+            } else {
+                System.out.println("Please enter either (Y or N) for Yes or No");
             }
         }
 
@@ -83,7 +83,7 @@ public class TestRunner {
                         questionAttempts++;
                         questionPrinter(currentQuestion, optionSelector);
                         System.out.println("That is not correct try again:");
-                        System.out.println("Attempts left: " + (optionSelector.size() - questionAttempts)); // Currently not getting the correct value on second attempt
+                        System.out.println("Attempts so far: " + questionAttempts + "/" + "3"); // Currently not getting the correct value on second attempt
                         if (optionSelector.size() == 1) {
                             System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                             break;
@@ -116,9 +116,7 @@ public class TestRunner {
     }
     // Takes in the current question and an Array with the indexes of the options (0, 1, 2, 3) and prints out the options provided
     public static void questionPrinter(String currentQuestion, ArrayList<Integer> options) {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("****************************************************************");
-        }
+        seperatorPrinter(10);
         System.out.println(currentQuestion);
         System.out.println("----------------------------------------------");
         System.out.println("Select an answer from the below options:");
@@ -162,9 +160,7 @@ public class TestRunner {
     public static ArrayList<String> subjectPrinter(ArrayList<String> subjects, int totalQuestions) {
         ArrayList<String> chosenSubjects = new ArrayList<>();
         while(true) {
-            for (int i = 0; i < 4; i++) {
-                System.out.println("****************************************************************");
-            }
+            seperatorPrinter(4);
             if (chosenSubjects.size() == totalQuestions || subjects.size() == 0) {
                 break;
             }
@@ -176,19 +172,21 @@ public class TestRunner {
                 System.out.println(i + ": " + subjects.get(i));
             }
             System.out.println("Select the subject by its allocated number (eg: 1):");
-            int selectedSubject = Integer.parseInt(scanner.nextLine());
-            if(selectedSubject > subjects.size()) {
-                System.out.println("Subject not found, please use select a number within range");
-            } else {
-                chosenSubjects.add(subjects.get(selectedSubject));
-                subjects.remove(subjects.get(selectedSubject));
+            try {
+                int selectedSubject = Integer.parseInt(scanner.nextLine());
+                if (selectedSubject < subjects.size()) {
+                    chosenSubjects.add(subjects.get(selectedSubject));
+                    subjects.remove(subjects.get(selectedSubject));
+                } else {
+                    System.out.println("Subject not found, please enter a number within the range presented");
+                }
+            }catch (NumberFormatException e) {
+                System.out.println("That is not a listed number, please enter a number within the range presented");
             }
             if (subjects.size() == 0) {
                 break;
             }
-            System.out.println("Would you like to continue adding subjects? (Y/N)");
-            String continueChoice = scanner.nextLine();
-            if (continueChoice.equalsIgnoreCase("N")) {
+            if (quitOrContinueOptions("continue adding subjects?") == 2) {
                 break;
             }
         }
@@ -212,31 +210,40 @@ public class TestRunner {
         return randomQuestions;
     }
     // Takes in a phrase, an array of chosenSubjects and the total questions and returns a choice for another conditional statement to interpret
-    public static int quitOrContinueOptions(String phrase, ArrayList<String> chosenSubjects, int totalQuestions) {
-        int returnOption = 0; // 1 = continue; 2 = break; (when subject added),  3 = break; (when no subject added)
+    public static int quitOrContinueOptions(String phrase) {
+        int returnOption = 0; // 1 = continue; 2 = break;  3 = Invalid input
         Scanner scanner = new Scanner(System.in);
-        System.out.printf("Would you like to %s? (Y/N)", phrase);
-        String continueChoice = scanner.nextLine();
-        if (continueChoice.equalsIgnoreCase("N")) {
-            returnOption = 2;   // Will break anyway if just 1 subject is selected etc
-            if (phrase.equals("add a subject") && chosenSubjects == null) {
-                returnOption = 3;
+        while (true) {
+            System.out.printf("Would you like to %s? (Y/N)", phrase);
+            String continueChoice = scanner.nextLine();
+            if (continueChoice.equalsIgnoreCase("N")) {
+                returnOption = 2;   // Will break anyway if just 1 subject is selected etc
+                break;
+            } else if (continueChoice.equalsIgnoreCase("Y")) {
+                returnOption = 1;
+                break;
+            } else {
+                System.out.println("Please enter a valid input as requested");
             }
-        } else if (continueChoice.equalsIgnoreCase("Y")) {
-            returnOption = 1;
         }
         return returnOption;
     }
     // Takes in all the subjects (subjectsSetToArray) and the total questions, if total questions is less than subject count it does 1 question per subject else it splits them evenly
     public static ArrayList<String> defaultSubjects(ArrayList<String> subjectsArray, int totalQuestions) {
         ArrayList<String> defaultChoices = new ArrayList<String>();
-        if (subjectsArray.size() <= totalQuestions) {
-            for(int i = 0; i < totalQuestions; i++) {
+        if (subjectsArray.size() < totalQuestions) {
+            for(int i = 0; i < subjectsArray.size(); i++) {
                 defaultChoices.add(subjectsArray.get(i));
         }
-            return defaultChoices;
+            return questionRandomizer(questionSubjectSplit(totalQuestions, defaultChoices.size()), defaultChoices);
         } else {
             return questionRandomizer(questionSubjectSplit(totalQuestions, subjectsArray.size()), subjectsArray);
+        }
+    }
+
+    public static void seperatorPrinter(int numLines) {
+        for (int i = 0; i < numLines; i++) {
+            System.out.println("****************************************************************");
         }
     }
 
