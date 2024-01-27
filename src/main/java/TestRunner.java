@@ -54,13 +54,16 @@ public class TestRunner {
         }
         System.out.println("TEST--------------------------");
 
+        // Get the chosen destination (filepath) to save the report (validate this destination beforehand)
+
         // Have a HashMap initiated here to collect the question, attempts and question category etc for the report
+        HashMap<String, String[]> resultsForReport = new HashMap<String, String[]>();
 
         // The outer loop which Loops through the ArrayList of randomly compiled questions
         for (int i = 0; i < questions.size(); i++) {
             String currentQuestion = questions.get(i);
             int questionAttempts = 0;
-            String questionCategory = "";   // Needs a HashMap retrieval
+            String questionCategory = QuestionCategory.getCategory().get(currentQuestion);
 
             // Initial method call for printing out the question
             questionPrinter(currentQuestion, null);
@@ -83,7 +86,7 @@ public class TestRunner {
                         questionAttempts++;
                         questionPrinter(currentQuestion, optionSelector);
                         System.out.println("That is not correct try again:");
-                        System.out.println("Attempts so far: " + questionAttempts + "/" + "3"); // Currently not getting the correct value on second attempt
+                        System.out.println("Attempts so far: " + questionAttempts + "/" + "3");
                         if (optionSelector.size() == 1) {
                             System.out.println("You have ran out of attempts, the answer is: " + Answers.getAnswers().get(currentQuestion));
                             break;
@@ -95,15 +98,23 @@ public class TestRunner {
                     usersAnswer = scanner.nextLine().toUpperCase();
                 }
             }
-            // Grab the question (to get its category),number of tries
-            // Get chosen destination to save the report (validate this destination beforehand)
+            // After each question the report grabs the question (as key) and the number of tries and category as the value both within an array
+            resultsForReport.put(currentQuestion, new String[] {String.valueOf(questionAttempts), questionCategory});
+
+
+
+
             System.out.println("----------------------------------------------");
             System.out.println("If your answer was this then you are correct:");
 
             // Getting the answers
             System.out.println(Answers.getAnswers().get(currentQuestion));
         }
+        // Printing out the report (doesn't output them in order they were asked but in the sorted order of the question string, will need to address this by providing them a question number)
+        // Add the number as the key and have the question as value[0] and look this up to get the category
+        resultsForReport.forEach((key, value) -> System.out.println(key + " | Number of tries: " + value[0] + " | Category of question: " + value[1]));
     }
+
 
     // Takes in the current question and grabs the initial options returning them
     public static ArrayList<String> getInitialOptions(String question) {
