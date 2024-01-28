@@ -17,8 +17,8 @@ public class QuestionBank {
 
     public static HashMap<String, String[]> getQuestionsBySubject() {
         HashMap<String, String[]> subjects = new HashMap<String, String[]>();
-        subjects.put("General_trivia", getK1_questions());
-        subjects.put("Norse", getK2_questions());
+        subjects.put("General trivia", getK1_questions());
+        subjects.put("Norse Mythology", getK2_questions());
         return subjects;
     }
 

@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class TestRunner {
-    QuestionBank Questions = new QuestionBank();
 
     public static void main(String[] args) {
 
@@ -22,10 +21,11 @@ public class TestRunner {
             }
         }
 
-        // Have a HashMap initiated here to collect the attempts per category       CAUSING ISSUE
+        // Have a HashMap initiated here to collect the attempts per category
         HashMap<String, Integer> attemptsPerCategory = new HashMap<String, Integer>();
 
-        ArrayList<String> questions = null;
+        ArrayList<String> questions = null;  //TO BE USED LATER
+        ArrayList<String> result = null;
         while (true) {
             System.out.println("Would you like to choose your own subjects? (Y/N)? ");
             String subjectOption = scanner.nextLine();
@@ -34,12 +34,12 @@ public class TestRunner {
                 questions = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
                 break;
             } else if (subjectOption.equalsIgnoreCase("Y")){
-                // Subject printer (The subjects will be the categories) returns an array of chosen subjects            CHECK HERE
-                ArrayList<String> result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
+                // Subject printer (The subjects will be the categories) returns an array of chosen subjects
+                result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
                 // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
                 for (String i: result) {
                     attemptsPerCategory.put(i, 0);
-                }                                                                                                     //TO HERE
+                }
                 // Getting a good split of questions per subject returning this as an array
                 ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size());
 
@@ -52,14 +52,14 @@ public class TestRunner {
         }
 
 
-        // TESTING PURPOSES printing out the randomized questions (so far it occasionally repeats itself)
+        // TESTING PURPOSES printing out the randomized questions
         System.out.println("TEST--------------------------");
         for (String i : questions) {
             System.out.println(i);
         }
         System.out.println("TEST--------------------------");
 
-        // Get the chosen destination (filepath) to save the report (validate this destination beforehand)
+        // Get the chosen destination (filepath) to save the report (validate this destination beforehand) CHECK
 
         // Have a HashMap initiated here to collect the question, attempts and question category etc for the report
         HashMap<Integer, String[]> resultsForReport = new HashMap<Integer, String[]>();
@@ -107,27 +107,20 @@ public class TestRunner {
             questionNumber++;
             // After each question the report grabs the question (as key) and the number of tries and category as the value both within an array
             resultsForReport.put(questionNumber, new String[] {currentQuestion,String.valueOf(questionAttempts), questionCategory});
-            if (questionAttempts > 0) {                                                                              // CHECK HERE
-                attemptsPerCategory.put(questionCategory, questionAttempts + attemptsPerCategory.get(questionCategory));
+            if (questionAttempts > 0) {
+                attemptsPerCategory.put(questionCategory, attemptsPerCategory.get(questionCategory) + questionAttempts);
             }
 
-
-            // Getting the answers
-            System.out.println(Answers.getAnswers().get(currentQuestion));
         }
-        // Printing out the report (doesn't output them in order they were asked but in the sorted order of the question string, will need to address this by providing them a question number)
-        // Add the number as the key and have the question as value[0] and look this up to get the category
-        // As you are going through make a sum of the number of attempts by category and use this to define where to focus
-        resultsForReport.forEach((key, value) -> System.out.printf(
-                "---------------------------------------------------------------------------------\n" +
-                "Question %s: %s\n-Number of tries: %s\n-Category of question: %s\n-Answer: %s", key, value[0], value[1], value[2], Answers.getAnswers().get(value[0]) +
-                "\n---------------------------------------------------------------------------------\n"
-        ));
-        System.out.println("----------------------------------------------");
-        attemptsPerCategory.forEach((key, value) -> System.out.printf(
-                "Category |%s| Attempts |%s|\n", key, value)
-        );
+        // Printing out the report
+        Reporter.questionStatsPrinter(resultsForReport);
+
+        // Printing out the incorrect attempts per category (Show this against total questions per category)
+        ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size()); //CAN USE SPLIT WITH RESULT TO GET NUMBER OF QUESTIONS PER CATEGORY
+        Reporter.incorrectAttemptPerCat(attemptsPerCategory);
     }
+
+
 
 
     // Takes in the current question and grabs the initial options returning them
