@@ -22,6 +22,8 @@ public class TestRunner {
             }
         }
 
+        // Have a HashMap initiated here to collect the attempts per category       CAUSING ISSUE
+        HashMap<String, Integer> attemptsPerCategory = new HashMap<String, Integer>();
 
         ArrayList<String> questions = null;
         while (true) {
@@ -32,9 +34,12 @@ public class TestRunner {
                 questions = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
                 break;
             } else if (subjectOption.equalsIgnoreCase("Y")){
-                // Subject printer (The subjects will be the papers i.e., 2018 version) returns an array of chosen subjects
+                // Subject printer (The subjects will be the categories) returns an array of chosen subjects            CHECK HERE
                 ArrayList<String> result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
-
+                // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
+                for (String i: result) {
+                    attemptsPerCategory.put(i, 0);
+                }                                                                                                     //TO HERE
                 // Getting a good split of questions per subject returning this as an array
                 ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size());
 
@@ -57,8 +62,9 @@ public class TestRunner {
         // Get the chosen destination (filepath) to save the report (validate this destination beforehand)
 
         // Have a HashMap initiated here to collect the question, attempts and question category etc for the report
-        HashMap<String, String[]> resultsForReport = new HashMap<String, String[]>();
+        HashMap<Integer, String[]> resultsForReport = new HashMap<Integer, String[]>();
 
+        int questionNumber = 0;
         // The outer loop which Loops through the ArrayList of randomly compiled questions
         for (int i = 0; i < questions.size(); i++) {
             String currentQuestion = questions.get(i);
@@ -98,21 +104,29 @@ public class TestRunner {
                     usersAnswer = scanner.nextLine().toUpperCase();
                 }
             }
+            questionNumber++;
             // After each question the report grabs the question (as key) and the number of tries and category as the value both within an array
-            resultsForReport.put(currentQuestion, new String[] {String.valueOf(questionAttempts), questionCategory});
+            resultsForReport.put(questionNumber, new String[] {currentQuestion,String.valueOf(questionAttempts), questionCategory});
+            if (questionAttempts > 0) {                                                                              // CHECK HERE
+                attemptsPerCategory.put(questionCategory, questionAttempts + attemptsPerCategory.get(questionCategory));
+            }
 
-
-
-
-            System.out.println("----------------------------------------------");
-            System.out.println("If your answer was this then you are correct:");
 
             // Getting the answers
             System.out.println(Answers.getAnswers().get(currentQuestion));
         }
         // Printing out the report (doesn't output them in order they were asked but in the sorted order of the question string, will need to address this by providing them a question number)
         // Add the number as the key and have the question as value[0] and look this up to get the category
-        resultsForReport.forEach((key, value) -> System.out.println(key + " | Number of tries: " + value[0] + " | Category of question: " + value[1]));
+        // As you are going through make a sum of the number of attempts by category and use this to define where to focus
+        resultsForReport.forEach((key, value) -> System.out.printf(
+                "---------------------------------------------------------------------------------\n" +
+                "Question %s: %s\n-Number of tries: %s\n-Category of question: %s\n-Answer: %s", key, value[0], value[1], value[2], Answers.getAnswers().get(value[0]) +
+                "\n---------------------------------------------------------------------------------\n"
+        ));
+        System.out.println("----------------------------------------------");
+        attemptsPerCategory.forEach((key, value) -> System.out.printf(
+                "Category |%s| Attempts |%s|\n", key, value)
+        );
     }
 
 
@@ -129,9 +143,7 @@ public class TestRunner {
     public static void questionPrinter(String currentQuestion, ArrayList<Integer> options) {
         seperatorPrinter(10);
         System.out.println(currentQuestion);
-        System.out.println("----------------------------------------------");
-        System.out.println("Select an answer from the below options:");
-        System.out.println("----------------------------------------------");
+        headerPrinter("Select an answer from the below options:");
         if (options == null) {
             for (int i = 0; i < getInitialOptions(currentQuestion).size(); i++) {
                 System.out.println(getInitialOptions(currentQuestion).get(i));
@@ -176,9 +188,7 @@ public class TestRunner {
                 break;
             }
             Scanner scanner = new Scanner(System.in);
-            System.out.println("----------------------------------------------");
-            System.out.println("Select which subjects you would like in your test:");
-            System.out.println("----------------------------------------------");
+            headerPrinter("Select which subjects you would like in your test:");
             for (int i = 0; i < subjects.size(); i++) {
                 System.out.println(i + ": " + subjects.get(i));
             }
@@ -225,7 +235,7 @@ public class TestRunner {
         int returnOption = 0; // 1 = continue; 2 = break;  3 = Invalid input
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.printf("Would you like to %s? (Y/N)", phrase);
+            System.out.printf("Would you like to %s? (Y/N)\n", phrase);
             String continueChoice = scanner.nextLine();
             if (continueChoice.equalsIgnoreCase("N")) {
                 returnOption = 2;   // Will break anyway if just 1 subject is selected etc
@@ -256,6 +266,12 @@ public class TestRunner {
         for (int i = 0; i < numLines; i++) {
             System.out.println("****************************************************************");
         }
+    }
+
+    public static void headerPrinter(String message) {
+            System.out.println("----------------------------------------------");
+            System.out.printf("%s \n", message);
+            System.out.println("----------------------------------------------");
     }
 
 }
