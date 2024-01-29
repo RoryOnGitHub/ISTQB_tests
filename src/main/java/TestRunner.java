@@ -120,7 +120,10 @@ public class TestRunner {
         Reporter.questionStatsPrinter(resultsForReport);
 
         // Printing out the incorrect attempts per category (Show this against total questions per category)
-        Reporter.incorrectAttemptPerCat(attemptsPerCategory, questionsPerCategory, usersTotalQuestions);
+        Reporter.resultsBreakdown(attemptsPerCategory, questionsPerCategory, usersTotalQuestions);
+
+        // Printing out each category with a score, the higher the score the more attention required
+        Reporter.areasToStudyPrinter(Reporter.areasToFocusStudy(result, attemptsPerCategory, questionsPerCategory));
     }
 
 
