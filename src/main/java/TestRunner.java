@@ -24,25 +24,29 @@ public class TestRunner {
         // Have a HashMap initiated here to collect the attempts per category
         HashMap<String, Integer> attemptsPerCategory = new HashMap<String, Integer>();
 
+        HashMap<String, Integer> questionsPerCategory = new HashMap<String, Integer>();
+
         ArrayList<String> questions = null;  //TO BE USED LATER
         ArrayList<String> result = null;
+        ArrayList<Integer> split = null;
         while (true) {
             System.out.println("Would you like to choose your own subjects? (Y/N)? ");
             String subjectOption = scanner.nextLine();
             if (subjectOption.equalsIgnoreCase("N")) {
                 // Default option for subject selection
-                questions = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
+                result = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
+                split = questionSubjectSplit(usersTotalQuestions, result.size());
+                questions = questionRandomizer(split, result);
+                // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later and adds questions per category
+                Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
                 break;
             } else if (subjectOption.equalsIgnoreCase("Y")){
                 // Subject printer (The subjects will be the categories) returns an array of chosen subjects
                 result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
-                // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
-                for (String i: result) {
-                    attemptsPerCategory.put(i, 0);
-                }
                 // Getting a good split of questions per subject returning this as an array
-                ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size());
-
+                split = questionSubjectSplit(usersTotalQuestions, result.size());
+                // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
+                Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
                 // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
                 questions = questionRandomizer(split, result);
                 break;
@@ -65,12 +69,12 @@ public class TestRunner {
         HashMap<Integer, String[]> resultsForReport = new HashMap<Integer, String[]>();
 
         int questionNumber = 0;
+
         // The outer loop which Loops through the ArrayList of randomly compiled questions
         for (int i = 0; i < questions.size(); i++) {
             String currentQuestion = questions.get(i);
             int questionAttempts = 0;
             String questionCategory = QuestionCategory.getCategory().get(currentQuestion);
-
             // Initial method call for printing out the question
             questionPrinter(currentQuestion, null);
 
@@ -116,8 +120,7 @@ public class TestRunner {
         Reporter.questionStatsPrinter(resultsForReport);
 
         // Printing out the incorrect attempts per category (Show this against total questions per category)
-        ArrayList<Integer> split = questionSubjectSplit(usersTotalQuestions, result.size()); //CAN USE SPLIT WITH RESULT TO GET NUMBER OF QUESTIONS PER CATEGORY
-        Reporter.incorrectAttemptPerCat(attemptsPerCategory);
+        Reporter.incorrectAttemptPerCat(attemptsPerCategory, questionsPerCategory, usersTotalQuestions);
     }
 
 
@@ -249,9 +252,9 @@ public class TestRunner {
             for(int i = 0; i < subjectsArray.size(); i++) {
                 defaultChoices.add(subjectsArray.get(i));
         }
-            return questionRandomizer(questionSubjectSplit(totalQuestions, defaultChoices.size()), defaultChoices);
+            return defaultChoices;
         } else {
-            return questionRandomizer(questionSubjectSplit(totalQuestions, subjectsArray.size()), subjectsArray);
+            return subjectsArray;
         }
     }
 
@@ -262,9 +265,9 @@ public class TestRunner {
     }
 
     public static void headerPrinter(String message) {
-            System.out.println("----------------------------------------------");
+            System.out.println("----------------------------------------------------------------");
             System.out.printf("%s \n", message);
-            System.out.println("----------------------------------------------");
+            System.out.println("----------------------------------------------------------------");
     }
 
 }
