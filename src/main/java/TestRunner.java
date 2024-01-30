@@ -1,9 +1,10 @@
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class TestRunner {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         int usersTotalQuestions = 0;
         Scanner scanner = new Scanner(System.in);
@@ -67,22 +68,26 @@ public class TestRunner {
 
         // Get the chosen destination (filepath) to save the report (validate this destination beforehand) and create blank report  GIVE OPTION IF THEY DO NOT WANT A REPORT FILE
         String filePath = "";
-        while (true) {
-            int valid = 0;
-            System.out.println("Please enter a valid filepath, this is where your test report will be stored");
-            filePath = scanner.nextLine() + "" + "\\test_report.txt";
-            try {
-                Reporter.writeReportToFile(filePath, "");
-            } catch (IOException e){
-                System.out.println("This file path is invalid, unable to create a report here: " + filePath);
-                valid = 1;
-            }
-            if (valid == 0) {
-                break;
+        if (quitOrContinueOptions("have the test results saved in a report?") == 1) {
+            while (true) {
+                int valid = 0;
+                System.out.println("Please enter a valid filepath, this is where your test report will be stored");
+                filePath = scanner.nextLine() + "" + "\\test_report.txt";
+                try {
+                    Reporter.writeReportToFile(filePath, "");
+                } catch (IOException e){
+                    System.out.println("This file path is invalid, unable to create a report here: " + filePath);
+                    valid = 1;
+                    if (quitOrContinueOptions("continue adding a file path for the report to be saved to?") == 2) {
+                        filePath = "";
+                        break;
+                    }
+                }
+                if (valid == 0) {
+                    break;
+                }
             }
         }
-
-
 
 
         // Have a HashMap initiated here to collect the question, attempts and question category etc for the report
@@ -111,6 +116,7 @@ public class TestRunner {
                     optionSelector.remove((Integer)indexOfAnswer);
                     if (QuestionOptions.getOptions().get(currentQuestion)[indexOfAnswer].equals(Answers.getAnswers().get(currentQuestion))) {
                         System.out.println("That is correct!");
+                        TimeUnit.SECONDS.sleep(3);      //A pause so that you can read that you have gotten the question correct
                         break;
                     } else {
                         questionAttempts++;
@@ -137,25 +143,28 @@ public class TestRunner {
 
         }
         // Outputting the report, either by console or txt file
+        if (!filePath.equals("")) {
+            // Compiling the report for writing
+            String fullReport =
+                    Reporter.questionStatsWriter(resultsForReport) +
+                            Reporter.resultsBreakdownWriter(attemptsPerCategory, questionsPerCategory, usersTotalQuestions) +
+                            Reporter.areasToStudyWriter(Reporter.areasToFocusStudy(result, attemptsPerCategory, questionsPerCategory));
 
-        // Compiling the report for writing
-        String fullReport =
-                Reporter.questionStatsWriter(resultsForReport) +
-                Reporter.resultsBreakdownWriter(attemptsPerCategory, questionsPerCategory, usersTotalQuestions) +
-                Reporter.areasToStudyWriter(Reporter.areasToFocusStudy(result, attemptsPerCategory, questionsPerCategory));
+            // Writing the report
+            Reporter.writeReportToFile(filePath, fullReport);
+        }
 
-        // Writing the report
-        Reporter.writeReportToFile(filePath, fullReport);
+        if (filePath.equals("")) {
+            // Printing out the stats for each question
+            Reporter.questionStatsPrinter(resultsForReport);
 
+            // Printing out the incorrect attempts per category (Show this against total questions per category)
+            Reporter.resultsBreakdown(attemptsPerCategory, questionsPerCategory, usersTotalQuestions);
 
-        // Printing out the stats for each question
-        Reporter.questionStatsPrinter(resultsForReport);
+            // Printing out each category with a score, the higher the score the more attention required
+            Reporter.areasToStudyPrinter(Reporter.areasToFocusStudy(result, attemptsPerCategory, questionsPerCategory));
+        }
 
-        // Printing out the incorrect attempts per category (Show this against total questions per category)
-        Reporter.resultsBreakdown(attemptsPerCategory, questionsPerCategory, usersTotalQuestions);
-
-        // Printing out each category with a score, the higher the score the more attention required
-        Reporter.areasToStudyPrinter(Reporter.areasToFocusStudy(result, attemptsPerCategory, questionsPerCategory));
     }
 
 
