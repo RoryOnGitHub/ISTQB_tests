@@ -11,15 +11,14 @@ public class TestRunner {
         while (true) {
             System.out.println("How many questions in total would you like? (Choose a number between 1 and 40)");
             try {
-                usersTotalQuestions = scanner.nextInt();
+                usersTotalQuestions = Integer.parseInt(scanner.nextLine());
                 if (usersTotalQuestions > 0 && usersTotalQuestions <= 40) {
                     break;
                 } else {
                     System.out.println("You must choose a number between 0 and 40 ");
                 }
-            } catch (InputMismatchException e){
+            } catch (NumberFormatException e){
                 System.out.println("You must choose a number between 0 and 40 ");
-                scanner.nextLine(); // Consumes the enter after inputting an integer, else previous input integer request consumes the enter
             }
         }
 
@@ -68,10 +67,10 @@ public class TestRunner {
 
         // Get the chosen destination (filepath) to save the report (validate this destination beforehand) and create blank report  GIVE OPTION IF THEY DO NOT WANT A REPORT FILE
         String filePath = "";
-        if (quitOrContinueOptions("have the test results saved in a report?") == 1) {
+        if (quitOrContinueOptions("have the test results saved in a report file") == 1) {
             while (true) {
                 int valid = 0;
-                System.out.println("Please enter a valid filepath, this is where your test report will be stored");
+                System.out.println("Please enter a valid file path, this is where your test report will be stored");
                 filePath = scanner.nextLine() + "" + "\\test_report.txt";
                 try {
                     Reporter.writeReportToFile(filePath, "");
