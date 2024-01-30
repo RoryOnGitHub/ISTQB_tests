@@ -102,7 +102,7 @@ public class TestRunner {
             // Initial method call for printing out the question
             questionPrinter(currentQuestion, null);
 
-            System.out.println("Please type your answer here (A,B,C,D): "); // Deal with say option A if it has been removed etc and if so when it is re-entered then its ignored.
+            System.out.println("Please type your answer here (a,b,c,d): "); // Deal with say option A if it has been removed etc and if so when it is re-entered then its ignored.
             String usersAnswer = scanner.nextLine().toUpperCase();
             ArrayList<Integer> optionSelector = new ArrayList<Integer>();
             Collections.addAll(optionSelector, 0, 1, 2, 3);
@@ -115,7 +115,7 @@ public class TestRunner {
                     optionSelector.remove((Integer)indexOfAnswer);
                     if (QuestionOptions.getOptions().get(currentQuestion)[indexOfAnswer].equals(Answers.getAnswers().get(currentQuestion))) {
                         System.out.println("That is correct!");
-                        TimeUnit.SECONDS.sleep(3);      //A pause so that you can read that you have gotten the question correct
+                        TimeUnit.SECONDS.sleep(2);      //A pause so that you can read that you have gotten the question correct
                         break;
                     } else {
                         questionAttempts++;
