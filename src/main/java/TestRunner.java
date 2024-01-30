@@ -1,8 +1,9 @@
+import java.io.IOException;
 import java.util.*;
 
 public class TestRunner {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         int usersTotalQuestions = 0;
         Scanner scanner = new Scanner(System.in);
@@ -26,7 +27,7 @@ public class TestRunner {
 
         HashMap<String, Integer> questionsPerCategory = new HashMap<String, Integer>();
 
-        ArrayList<String> questions = null;  //TO BE USED LATER
+        ArrayList<String> questions = null;
         ArrayList<String> result = null;
         ArrayList<Integer> split = null;
         while (true) {
@@ -56,14 +57,33 @@ public class TestRunner {
         }
 
 
-        // TESTING PURPOSES printing out the randomized questions
+        // TESTING PURPOSES printing out the randomized questions                               TESTING PURPOSES
         System.out.println("TEST--------------------------");
         for (String i : questions) {
             System.out.println(i);
         }
         System.out.println("TEST--------------------------");
+        // TESTING PURPOSES printing out the randomized questions                               TESTING PURPOSES
 
-        // Get the chosen destination (filepath) to save the report (validate this destination beforehand) CHECK
+        // Get the chosen destination (filepath) to save the report (validate this destination beforehand) and create blank report  GIVE OPTION IF THEY DO NOT WANT A REPORT FILE
+        String filePath = "";
+        while (true) {
+            int valid = 0;
+            System.out.println("Please enter a valid filepath, this is where your test report will be stored");
+            filePath = scanner.nextLine() + "" + "\\test_report.txt";
+            try {
+                Reporter.writeReportToFile(filePath, "");
+            } catch (IOException e){
+                System.out.println("This file path is invalid, unable to create a report here: " + filePath);
+                valid = 1;
+            }
+            if (valid == 0) {
+                break;
+            }
+        }
+
+
+
 
         // Have a HashMap initiated here to collect the question, attempts and question category etc for the report
         HashMap<Integer, String[]> resultsForReport = new HashMap<Integer, String[]>();
@@ -116,7 +136,19 @@ public class TestRunner {
             }
 
         }
-        // Printing out the report
+        // Outputting the report, either by console or txt file
+
+        // Compiling the report for writing
+        String fullReport =
+                Reporter.questionStatsWriter(resultsForReport) +
+                Reporter.resultsBreakdownWriter(attemptsPerCategory, questionsPerCategory, usersTotalQuestions) +
+                Reporter.areasToStudyWriter(Reporter.areasToFocusStudy(result, attemptsPerCategory, questionsPerCategory));
+
+        // Writing the report
+        Reporter.writeReportToFile(filePath, fullReport);
+
+
+        // Printing out the stats for each question
         Reporter.questionStatsPrinter(resultsForReport);
 
         // Printing out the incorrect attempts per category (Show this against total questions per category)
@@ -128,6 +160,8 @@ public class TestRunner {
 
 
 
+
+// TestRunner methods
 
     // Takes in the current question and grabs the initial options returning them
     public static ArrayList<String> getInitialOptions(String question) {
