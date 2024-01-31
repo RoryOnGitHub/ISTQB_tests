@@ -246,21 +246,86 @@ public class QuestionOptions {
                 "d) The test manager plans and organizes the testing and specifies the test cases, while the tester executes the tests "
         });
         // 5.2 Risk management
-        options.put("", new String[] {});
-        options.put("", new String[] {});
-        options.put("", new String[] {});
-        options.put("", new String[] {});
+        options.put("Which of the following can affect and be part of the (initial) test planning?", new String[] {
+                "a) Budget limitations ",
+                "b) Test log ",
+                "c) Failure rate ",
+                "d) Use cases "
+        });
+        options.put("Which of the following lists contains only typical exit criteria from testing?", new String[] {
+                "a) Reliability measures, test coverage, schedule and status about fixing defect and remaining risks ",
+                "b) Reliability measures, test coverage, degree of tester’s independence and product completeness ",
+                "c) Reliability measures, test coverage, test cost, availability of test environment, time to market and product completeness ",
+                "d) Time to market, remaining defects, tester qualification, availability of testable use cases, test coverage and test cost "
+        });
+        options.put("The project develops a \"smart\" heating thermostat. The control algorithms of the thermostat were modeled as Matlab/Simulink models and run on the internet connected server. The thermostat uses the specifications of the server to trigger the heating valves. \n" +
+                "The test manager has defined the following test strategy/approach in the test plan: \n" +
+                "1. The acceptance test for the whole system is executed as an experience-based test. \n" +
+                "2. The control algorithms on the server are checked against standard of the energy saving regulation. \n" +
+                "3. The functional test of the thermostat is performed as risk-based testing. \n" +
+                "4. The security tests of data / communication via the internet are executed together with external security experts. \n" +
+                "\n" +
+                "What four common types of test strategies/approaches did the test manager implement in the test plan?\n", new String[] {
+                        "a) methodical, analytical, reactive and regression-averse ",
+                        "b) analytical, standard-compliant, consultative and reactive ",
+                        "c) model-based, methodical, analytical and consultative ",
+                        "d) regression-averse, consultative, reactive and methodical "
+        });
+        options.put("Which one of the following is the characteristic of a metrics-based approach for test estimation?", new String[] {
+                "a) Budget which was used by a previous similar test project ",
+                "b) Overall experience collected in interviews with test managers ",
+                "c) Estimation of effort for test automation agreed in the test team ",
+                "d) Average of calculations collected from business experts "
+        });
         // 5.3 Test monitoring, control, and completion
-        options.put("", new String[] {});
-        options.put("", new String[] {});
+        options.put("Which of the following metrics would be MOST useful to monitor during test execution?", new String[] {
+                "a) Percentage of executed test cases ",
+                "b) Average number of testers involved in the test execution ",
+                "c) Coverage of requirements by source code ",
+                "d) Percentage of test cases already created and reviewed "
+        });
+        options.put("Which one of the following is NOT included in a test summary report?", new String[] {
+                "a) Defining pass/fail criteria and objectives of testing ",
+                "b) Deviations from the test approach ",
+                "c) Measurements of actual progress against exit criteria ",
+                "d) Evaluation of the quality of the test object "
+        });
         // 5.4 Configuration management
 
         // 5.5 Defect management
-        options.put("", new String[] {});
+        options.put("You are testing a new version of software for a coffee machine. The machine can prepare different types of coffee based on four categories. i.e., coffee size, sugar, milk, and syrup. The criteria are as follows: \n" +
+                "- Coffee size (small, medium, large) \n" +
+                "- Sugar (none, 1 unit, 2 units, 3 units, 4 units) \n" +
+                "- Milk (yes or no) \n" +
+                "- Coffee flavor syrup (no syrup, caramel, hazelnut, vanilla) \n" +
+                "\n" +
+                "Now you are writing a defect report with the following information: \n" +
+                "- Title: Low coffee temperature. \n" +
+                "- Short summary: When you select coffee with milk, the time for preparing coffee is too long and the temperature of the beverage is too low (less than 40 °C). \n" +
+                "- Expected result: The temperature of coffee should be standard (about 75 °C). \n" +
+                "- Degree of risk: Medium \n" +
+                "- Priority: Normal \n" +
+                "\n" +
+                "What valuable information was omitted in the above defect report? \n", new String[] {
+                        "a) The actual test results ",
+                        "b) Identification of the tested software version ",
+                        "c) Status of the defect ",
+                        "d) Ideas for improving the test case "
+        });
 
         // 6.1 Tool support for testing
-        options.put("", new String[] {});
-        options.put("", new String[] {});
+        options.put("Which one of the following is MOST likely to be a benefit of test execution tools?", new String[] {
+                "a) It is easy to create regression tests ",
+                "b) It is easy to maintain version control of test assets ",
+                "c) It is easy to design tests for security testing ",
+                "d) It is easy to run regression tests "
+        });
+        options.put("Which one of the following test tools is mostly suitable for developers rather than testers?", new String[] {
+                "a) Requirement management tools ",
+                "b) Configuration management tools ",
+                "c) Defect management tools ",
+                "d) Performance testing tools "
+        });
         // 6.2 Benefits and risk of test automation
 
 
