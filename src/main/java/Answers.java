@@ -97,8 +97,8 @@ public class Answers {
                 "Which of the following list of test cases is a result of applying the equivalence partitioning test technique to test this requirement?\n", "c) Verify that the application can play a video on each of the display sizes in the requirement (4 test cases) ");
 //      4.3 White box test techniques
         answers.put("The following statement refers to decision coverage: \n" +
-                "“When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.” \n" +
-                "Which of the following statement is correct?\n", "b) The statement is true. Any single test case would cause the outcome of the “if” statement to be either true or false ");
+                "'When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.' \n" +
+                "Which of the following statement is correct?\n", "b) The statement is true. Any single test case would cause the outcome of the 'if' statement to be either true or false ");
         answers.put("Which one of the following is the description of statement coverage?", "b) It is a metric, which is the percentage of statements in the source code that have been executed ");
         answers.put("Which statement about the relationship between statement coverage and decision coverage is true?", "a) 100% decision coverage also guarantees 100% statement coverage");
 //      4.4 Experience-based test techniques

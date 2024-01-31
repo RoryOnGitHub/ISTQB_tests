@@ -5,7 +5,10 @@ import java.util.concurrent.TimeUnit;
 public class TestRunner {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
+        //TEST FOR HASH LOOKUP
+        for (String i :QuestionBank.getQ6_1_questions()) {
+            System.out.println(Answers.getAnswers().get(i));
+        }
         int usersTotalQuestions = 0;
         Scanner scanner = new Scanner(System.in);
         while (true) {

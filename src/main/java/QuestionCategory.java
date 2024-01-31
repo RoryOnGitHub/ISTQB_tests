@@ -94,7 +94,7 @@ public class QuestionCategory {
                 "Which of the following list of test cases is a result of applying the equivalence partitioning test technique to test this requirement?\n", "4.2 Black-box test techniques");
         // 4.3 White box test techniques
         category.put("The following statement refers to decision coverage: \n" +
-                "“When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.” \n" +
+                "'When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.' \n" +
                 "Which of the following statement is correct?\n", "4.3 White box test techniques");
         category.put("Which one of the following is the description of statement coverage?", "4.3 White box test techniques");
         category.put("Which statement about the relationship between statement coverage and decision coverage is true?", "4.3 White box test techniques");

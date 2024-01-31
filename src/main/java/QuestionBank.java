@@ -121,7 +121,7 @@ public class QuestionBank {
     // 4.3 White box test techniques
     static String[] q4_3 = {
         "The following statement refers to decision coverage: \n" +
-                "“When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.” \n" +
+                "'When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.' \n" +
                 "Which of the following statement is correct?\n",
                 "Which one of the following is the description of statement coverage?",
                 "Which statement about the relationship between statement coverage and decision coverage is true?",

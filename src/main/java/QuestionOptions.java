@@ -110,7 +110,7 @@ public class QuestionOptions {
                 "a) Decision to test the maintainability of the software",
                 "b) Decision to test the system after migration to a new operating platform",
                 "c) Decision to test if archived data is possible to be retrieved",
-                "d) Decision to test after “hot fixes”"
+                "d) Decision to test after “hot fixes“"
         });
 
         // 3.1 Static testing basics
@@ -209,10 +209,10 @@ public class QuestionOptions {
         });
         // 4.3 White box test techniques
         options.put("The following statement refers to decision coverage: \n" +
-                "“When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.” \n" +
+                "'When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.' \n" +
                 "Which of the following statement is correct?\n", new String[] {
                         "a) The statement is true. Any single test case provides 100% statement coverage and therefore 50% decision coverage ",
-                        "b) The statement is true. Any single test case would cause the outcome of the “if” statement to be either true or false ",
+                        "b) The statement is true. Any single test case would cause the outcome of the 'if' statement to be either true or false ",
                         "c) The statement is false. A single test case can only guarantee 25% decision coverage in this case ",
                         "d) The statement is false. The statement is too broad. It may be correct or not, depending on the tested software "
         });
