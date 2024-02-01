@@ -190,10 +190,10 @@ public class QuestionOptions {
                             "- The speed in km/h is available to the system as an integer value. \n" +
                             "\n" +
                     "Which would be the most likely set of values (km/h) identified by applying the boundary value analysis, where only the values on the boundaries of the equivalence classes are selected?\n", new String[] {
-                            "a) 0, 49, 50, 54, 59, 60 ",
-                            "b) 50, 55, 60 ",
-                            "c) 49, 50, 54, 55, 60, 62 ",
-                            "d) 50, 51, 55, 56, 60, 61 "
+                            "a) 0, 49, 50, 54, 59, 60",
+                            "b) 50, 55, 60",
+                            "c) 49, 50, 54, 55, 60, 62",
+                            "d) 50, 51, 55, 56, 60, 61"
         });
         options.put("A video application has the following requirement: The application shall allow playing a video on the following display resolution: \n" +
                             "1. 640x480 \n" +
@@ -202,61 +202,61 @@ public class QuestionOptions {
                             "4. 1920x1080 \n" +
                             "\n" +
                     "Which of the following list of test cases is a result of applying the equivalence partitioning test technique to test this requirement?\n", new String[] {
-                            "a) Verify that the application can play a video on a display of size 1920x1080 (1 test case) ",
-                            "b) Verify that the application can play a video on a display of size 640x480 and 1920x1080 (2 test cases) ",
-                            "c) Verify that the application can play a video on each of the display sizes in the requirement (4 test cases) ",
-                            "d) Verify that the application can play a video on any one of the display sizes in the requirement (1 test case) "
+                            "a) Verify that the application can play a video on a display of size 1920x1080 (1 test case)",
+                            "b) Verify that the application can play a video on a display of size 640x480 and 1920x1080 (2 test cases)",
+                            "c) Verify that the application can play a video on each of the display sizes in the requirement (4 test cases)",
+                            "d) Verify that the application can play a video on any one of the display sizes in the requirement (1 test case)"
         });
         // 4.3 White box test techniques
         options.put("The following statement refers to decision coverage: \n" +
                 "'When the code contains only a single ‘if’ statement and no loops or CASE statements, and its execution is not nested within the test, any single test case we run will result in 50% decision coverage.' \n" +
                 "Which of the following statement is correct?\n", new String[] {
-                        "a) The statement is true. Any single test case provides 100% statement coverage and therefore 50% decision coverage ",
-                        "b) The statement is true. Any single test case would cause the outcome of the 'if' statement to be either true or false ",
-                        "c) The statement is false. A single test case can only guarantee 25% decision coverage in this case ",
-                        "d) The statement is false. The statement is too broad. It may be correct or not, depending on the tested software "
+                        "a) The statement is true. Any single test case provides 100% statement coverage and therefore 50% decision coverage",
+                        "b) The statement is true. Any single test case would cause the outcome of the 'if' statement to be either true or false",
+                        "c) The statement is false. A single test case can only guarantee 25% decision coverage in this case",
+                        "d) The statement is false. The statement is too broad. It may be correct or not, depending on the tested software"
         });
         options.put("Which one of the following is the description of statement coverage?", new String[] {
-                "a) It is a metric, which is the percentage of test cases that have been executed ",
-                "b) It is a metric, which is the percentage of statements in the source code that have been executed " ,
-                "c) It is a metric, which is the number of statements in the source code that have been executed by test cases that are passed ",
-                "d) It is a metric, that gives a true/false confirmation if all statements are covered or not "
+                "a) It is a metric, which is the percentage of test cases that have been executed",
+                "b) It is a metric, which is the percentage of statements in the source code that have been executed" ,
+                "c) It is a metric, which is the number of statements in the source code that have been executed by test cases that are passed",
+                "d) It is a metric, that gives a true/false confirmation if all statements are covered or not"
         });
         options.put("Which statement about the relationship between statement coverage and decision coverage is true?", new String[] {
-                "a) 100% decision coverage also guarantees 100% statement coverage ",
-                "b) 100% statement coverage also guarantees 100% decision coverage ",
-                "c) 50% decision coverage also guarantees 50% statement coverage ",
-                "d) Decision coverage can never reach 100% "
+                "a) 100% decision coverage also guarantees 100% statement coverage",
+                "b) 100% statement coverage also guarantees 100% decision coverage",
+                "c) 50% decision coverage also guarantees 50% statement coverage",
+                "d) Decision coverage can never reach 100%"
         });
         // 4.4 Experience-based test techniques
         options.put("For which of the following situations is exploratory testing suitable?", new String[] {
-                "a) When time pressure requires speeding up the execution of tests already specified ",
-                "b) When the system is developed incrementally, and no test charter is available ",
-                "c) When testers are available who have enough knowledge of similar applications and technologies ",
-                "d) When an advanced knowledge of the system already exists, and evidence is to be provided that it should be tested intensively "
+                "a) When time pressure requires speeding up the execution of tests already specified",
+                "b) When the system is developed incrementally, and no test charter is available",
+                "c) When testers are available who have enough knowledge of similar applications and technologies",
+                "d) When an advanced knowledge of the system already exists, and evidence is to be provided that it should be tested intensively"
         });
         // 4.5 Collaboration-based test approaches
 
 
         // 5.1 Test planning
         options.put("Which of the following statements BEST describes how tasks are divided between the test manager and the tester?", new String[] {
-                "a) The test manager plans testing activities and chooses the standards to be followed, while the tester chooses the tools and set the tools usage guidelines ",
-                "b) The test manager plans, coordinates and controls the testing activities, while the tester automates the tests ",
-                "c) The test manager plans, monitors, and controls the testing activities, while the tester designs tests and decides on the release of the test object ",
-                "d) The test manager plans and organizes the testing and specifies the test cases, while the tester executes the tests "
+                "a) The test manager plans testing activities and chooses the standards to be followed, while the tester chooses the tools and set the tools usage guidelines",
+                "b) The test manager plans, coordinates and controls the testing activities, while the tester automates the tests",
+                "c) The test manager plans, monitors, and controls the testing activities, while the tester designs tests and decides on the release of the test object",
+                "d) The test manager plans and organizes the testing and specifies the test cases, while the tester executes the tests"
         });
         // 5.2 Risk management
         options.put("Which of the following can affect and be part of the (initial) test planning?", new String[] {
-                "a) Budget limitations ",
-                "b) Test log ",
-                "c) Failure rate ",
-                "d) Use cases "
+                "a) Budget limitations",
+                "b) Test log",
+                "c) Failure rate",
+                "d) Use cases"
         });
         options.put("Which of the following lists contains only typical exit criteria from testing?", new String[] {
-                "a) Reliability measures, test coverage, schedule and status about fixing defect and remaining risks ",
-                "b) Reliability measures, test coverage, degree of tester’s independence and product completeness ",
-                "c) Reliability measures, test coverage, test cost, availability of test environment, time to market and product completeness ",
-                "d) Time to market, remaining defects, tester qualification, availability of testable use cases, test coverage and test cost "
+                "a) Reliability measures, test coverage, schedule and status about fixing defect and remaining risks",
+                "b) Reliability measures, test coverage, degree of tester’s independence and product completeness",
+                "c) Reliability measures, test coverage, test cost, availability of test environment, time to market and product completeness",
+                "d) Time to market, remaining defects, tester qualification, availability of testable use cases, test coverage and test cost"
         });
         options.put("The project develops a \"smart\" heating thermostat. The control algorithms of the thermostat were modeled as Matlab/Simulink models and run on the internet connected server. The thermostat uses the specifications of the server to trigger the heating valves. \n" +
                 "The test manager has defined the following test strategy/approach in the test plan: \n" +
@@ -266,29 +266,29 @@ public class QuestionOptions {
                 "4. The security tests of data / communication via the internet are executed together with external security experts. \n" +
                 "\n" +
                 "What four common types of test strategies/approaches did the test manager implement in the test plan?\n", new String[] {
-                        "a) methodical, analytical, reactive and regression-averse ",
-                        "b) analytical, standard-compliant, consultative and reactive ",
-                        "c) model-based, methodical, analytical and consultative ",
-                        "d) regression-averse, consultative, reactive and methodical "
+                        "a) methodical, analytical, reactive and regression-averse",
+                        "b) analytical, standard-compliant, consultative and reactive",
+                        "c) model-based, methodical, analytical and consultative",
+                        "d) regression-averse, consultative, reactive and methodical"
         });
         options.put("Which one of the following is the characteristic of a metrics-based approach for test estimation?", new String[] {
-                "a) Budget which was used by a previous similar test project ",
-                "b) Overall experience collected in interviews with test managers ",
-                "c) Estimation of effort for test automation agreed in the test team ",
-                "d) Average of calculations collected from business experts "
+                "a) Budget which was used by a previous similar test project",
+                "b) Overall experience collected in interviews with test managers",
+                "c) Estimation of effort for test automation agreed in the test team",
+                "d) Average of calculations collected from business experts"
         });
         // 5.3 Test monitoring, control, and completion
         options.put("Which of the following metrics would be MOST useful to monitor during test execution?", new String[] {
-                "a) Percentage of executed test cases ",
-                "b) Average number of testers involved in the test execution ",
-                "c) Coverage of requirements by source code ",
-                "d) Percentage of test cases already created and reviewed "
+                "a) Percentage of executed test cases",
+                "b) Average number of testers involved in the test execution",
+                "c) Coverage of requirements by source code",
+                "d) Percentage of test cases already created and reviewed"
         });
         options.put("Which one of the following is NOT included in a test summary report?", new String[] {
-                "a) Defining pass/fail criteria and objectives of testing ",
-                "b) Deviations from the test approach ",
-                "c) Measurements of actual progress against exit criteria ",
-                "d) Evaluation of the quality of the test object "
+                "a) Defining pass/fail criteria and objectives of testing",
+                "b) Deviations from the test approach",
+                "c) Measurements of actual progress against exit criteria",
+                "d) Evaluation of the quality of the test object"
         });
         // 5.4 Configuration management
 
@@ -307,24 +307,24 @@ public class QuestionOptions {
                 "- Priority: Normal \n" +
                 "\n" +
                 "What valuable information was omitted in the above defect report? \n", new String[] {
-                        "a) The actual test results ",
-                        "b) Identification of the tested software version ",
-                        "c) Status of the defect ",
-                        "d) Ideas for improving the test case "
+                        "a) The actual test results",
+                        "b) Identification of the tested software version",
+                        "c) Status of the defect",
+                        "d) Ideas for improving the test case"
         });
 
         // 6.1 Tool support for testing
         options.put("Which one of the following is MOST likely to be a benefit of test execution tools?", new String[] {
-                "a) It is easy to create regression tests ",
-                "b) It is easy to maintain version control of test assets ",
-                "c) It is easy to design tests for security testing ",
-                "d) It is easy to run regression tests "
+                "a) It is easy to create regression tests",
+                "b) It is easy to maintain version control of test assets",
+                "c) It is easy to design tests for security testing",
+                "d) It is easy to run regression tests"
         });
         options.put("Which one of the following test tools is mostly suitable for developers rather than testers?", new String[] {
-                "a) Requirement management tools ",
-                "b) Configuration management tools ",
-                "c) Defect management tools ",
-                "d) Performance testing tools "
+                "a) Requirement management tools",
+                "b) Configuration management tools",
+                "c) Defect management tools",
+                "d) Performance testing tools"
         });
         // 6.2 Benefits and risk of test automation
 
