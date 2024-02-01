@@ -49,7 +49,6 @@ public class TestRunner {
                 // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
                 Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
                 // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
-                System.out.println(split);
                 questions = questionRandomizer(split, result);
                 break;
             } else {
@@ -216,26 +215,38 @@ public class TestRunner {
 //                groupSplit.add(subjects / totalAmountQuestions);
 //            }
 //        }
-        if (totalAmountQuestions > subjects) {      // if 6 > 2 NEEDS FIXING with the example scenario
-            if (subjects % totalAmountQuestions == 0) { // 2 % 6 = 2
-                for (int i = 0; i < totalAmountQuestions; i++) {
-                    groupSplit.add(subjects / totalAmountQuestions);
-                }
-            } else {
-                int x = totalAmountQuestions - (subjects / totalAmountQuestions);  // 20 - (20/5)
-                int y = subjects / totalAmountQuestions;   // 4
-                for (int i = 0; i < totalAmountQuestions; i++) {
-                    if (i >= x) {      // 0, 1, 2, 3, 4
-                        groupSplit.add(y + 1);
-                    } else {
-                        groupSplit.add(y);
-                    }
-                }
+//        ---------------------Here
+//        if (totalAmountQuestions > subjects) {      // if 6 > 2 NEEDS FIXING with the example scenario
+//            if (subjects % totalAmountQuestions == 0) { // 2 % 6 = 2
+//                for (int i = 0; i < totalAmountQuestions; i++) {
+//                    groupSplit.add(subjects / totalAmountQuestions);
+//                }
+//            } else {
+//                int x = totalAmountQuestions - (subjects / totalAmountQuestions);  // 20 - (20/5)
+//                int y = subjects / totalAmountQuestions;   // 4
+//                for (int i = 0; i < totalAmountQuestions; i++) {
+//                    if (i >= x) {      // 0, 1, 2, 3, 4
+//                        groupSplit.add(y + 1);
+//                    } else {
+//                        groupSplit.add(y);
+//                    }
+//                }
+//            }
+//        } else {
+//            for (int i = 0; i < totalAmountQuestions; i++) {
+//                groupSplit.add(1);
+//            }
+//        }
+        if (totalAmountQuestions > subjects) {
+            for (int i = 0; i < subjects; i++) {
+                groupSplit.add(totalAmountQuestions / subjects);
             }
-        } else {
-            for (int i = 0; i < totalAmountQuestions; i++) {
-                groupSplit.add(1);
+        } else if (totalAmountQuestions % 2 != 0) {
+            int remainder = totalAmountQuestions % subjects;
+            for (int i = 0; i < subjects - 1; i++) {
+                groupSplit.add((totalAmountQuestions - remainder) / subjects);
             }
+            groupSplit.add(remainder);
         }
 
         return groupSplit;
@@ -275,7 +286,7 @@ public class TestRunner {
             }catch (NumberFormatException e) {
                 System.out.println("That is not a listed number, please enter a number within the range presented");
             }
-            if (subjects.size() == 0) {
+            if (subjects.size() == 0 || chosenSubjects.size() == totalQuestions) {
                 break;
             }
             if (quitOrContinueOptions("continue adding subjects?") == 2) {
