@@ -109,7 +109,7 @@ public class Answers {
 //      5.1 Test planning
         answers.put("Which of the following statements BEST describes how tasks are divided between the test manager and the tester?", "b) The test manager plans, coordinates and controls the testing activities, while the tester automates the tests");
 //      5.2 Risk management
-        answers.put("Which of the following can affect and be part of the (initial) test planning?", "a) Budget limitations ");
+        answers.put("Which of the following can affect and be part of the (initial) test planning?", "a) Budget limitations");
         answers.put("Which of the following lists contains only typical exit criteria from testing?", "a) Reliability measures, test coverage, schedule and status about fixing defect and remaining risks");
         answers.put("The project develops a \"smart\" heating thermostat. The control algorithms of the thermostat were modeled as Matlab/Simulink models and run on the internet connected server. The thermostat uses the specifications of the server to trigger the heating valves. \n" +
                 "The test manager has defined the following test strategy/approach in the test plan: \n" +

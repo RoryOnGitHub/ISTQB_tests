@@ -49,6 +49,7 @@ public class TestRunner {
                 // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
                 Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
                 // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
+                System.out.println(split);
                 questions = questionRandomizer(split, result);
                 break;
             } else {
@@ -59,6 +60,8 @@ public class TestRunner {
 
         // TESTING PURPOSES printing out the randomized questions                               TESTING PURPOSES
         System.out.println("TEST--------------------------");
+        System.out.println(result);
+        System.out.println(split);
         for (String i : questions) {
             System.out.println(i);
         }
@@ -213,13 +216,13 @@ public class TestRunner {
 //                groupSplit.add(subjects / totalAmountQuestions);
 //            }
 //        }
-        if (totalAmountQuestions > subjects) {
-            if (subjects % totalAmountQuestions == 0) {
+        if (totalAmountQuestions > subjects) {      // if 6 > 2 NEEDS FIXING with the example scenario
+            if (subjects % totalAmountQuestions == 0) { // 2 % 6 = 2
                 for (int i = 0; i < totalAmountQuestions; i++) {
                     groupSplit.add(subjects / totalAmountQuestions);
                 }
             } else {
-                int x = totalAmountQuestions - (subjects / totalAmountQuestions);  // 1
+                int x = totalAmountQuestions - (subjects / totalAmountQuestions);  // 20 - (20/5)
                 int y = subjects / totalAmountQuestions;   // 4
                 for (int i = 0; i < totalAmountQuestions; i++) {
                     if (i >= x) {      // 0, 1, 2, 3, 4
@@ -244,6 +247,7 @@ public class TestRunner {
         for(int i = 0; i < questionSubjects.toArray().length; i++) {
             subjects.add(questionSubjects.toArray()[i].toString());
         }
+        Collections.sort(subjects);
         return subjects;
     }
     // Takes an Array of all the subjects and gets the user to select which ones they want then returns an Array of chosen subjects
