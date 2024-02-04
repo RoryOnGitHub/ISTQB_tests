@@ -36,7 +36,7 @@ public class TestRunner {
             if (subjectOption.equalsIgnoreCase("N")) {
                 // Default option for subject selection
                 result = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
-                split = questionSubjectSplit(usersTotalQuestions, result.size());
+                split = questionSubjectSplit(usersTotalQuestions, result.size(), true);
                 questions = questionRandomizer(split, result);
                 // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later and adds questions per category
                 Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
@@ -45,10 +45,12 @@ public class TestRunner {
                 // Subject printer (The subjects will be the categories) returns an array of chosen subjects
                 result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
                 // Getting a good split of questions per subject returning this as an array
-                split = questionSubjectSplit(usersTotalQuestions, result.size());
+                split = questionSubjectSplit(usersTotalQuestions, result.size(), false);
                 // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
                 Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
                 // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
+                System.out.println(split);
+                System.out.println(result);
                 questions = questionRandomizer(split, result);
                 break;
             } else {
@@ -200,21 +202,11 @@ public class TestRunner {
         }
     }
     // Takes in the total amount of questions provided and the amount of subjects provided and returns an Array with an even split i.e., (3, 3, 3)
-    public static ArrayList<Integer> questionSubjectSplit(int totalAmountQuestions, int subjects) { // Change subjects to ArrayList<String>
+    public static ArrayList<Integer> questionSubjectSplit(int totalAmountQuestions, int subjects, boolean defaultChoice) {
         ArrayList<Integer> groupSplit = new ArrayList<>();
-        if (totalAmountQuestions > subjects) {
-            if (totalAmountQuestions % 2 == 0) {
-                int extraQuestions = totalAmountQuestions - subjects;
-                for (int i = 0; i < subjects; i++) {
-                    if (extraQuestions != 0) {
-                        groupSplit.add((totalAmountQuestions / subjects) + 1);
-                        extraQuestions--;
-                    } else {
-                        groupSplit.add(totalAmountQuestions / subjects);
-                    }
-                }
-            } else {
-                int remainder = totalAmountQuestions % subjects;
+        if (!defaultChoice) {
+            int remainder = totalAmountQuestions % subjects;
+            if (totalAmountQuestions % 2 != 0) {
                 for (int i = 0; i < subjects; i++) {
                     if (remainder != 0) {
                         groupSplit.add(((totalAmountQuestions - remainder) / subjects) + 1);
@@ -222,14 +214,45 @@ public class TestRunner {
                     } else {
                         groupSplit.add((totalAmountQuestions - remainder) / subjects);
                     }
+                }
 
+            } else {
+                for (int i = 0; i < subjects - 1; i++) {
+                    groupSplit.add(totalAmountQuestions / subjects);
                 }
             }
-        } else {
-            for (int i = 0; i < totalAmountQuestions; i++) {
-                groupSplit.add(1);
+        }
+        if (defaultChoice) {
+            if (totalAmountQuestions > subjects) {
+                if (totalAmountQuestions % 2 == 0) {
+                    int extraQuestions = totalAmountQuestions - subjects;
+                    for (int i = 0; i < subjects; i++) {
+                        if (extraQuestions != 0) {
+                            groupSplit.add((totalAmountQuestions / subjects) + 1);
+                            extraQuestions--;
+                        } else {
+                            groupSplit.add(totalAmountQuestions / subjects);
+                        }
+                    }
+                } else {
+                    int remainder = totalAmountQuestions % subjects;
+                    for (int i = 0; i < subjects; i++) {
+                        if (remainder != 0) {
+                            groupSplit.add(((totalAmountQuestions - remainder) / subjects) + 1);
+                            remainder--;
+                        } else {
+                            groupSplit.add((totalAmountQuestions - remainder) / subjects);
+                        }
+
+                    }
+                }
+            } else {
+                for (int i = 0; i < totalAmountQuestions; i++) {
+                    groupSplit.add(1);
+                }
             }
         }
+
         return groupSplit;
     }
     // Takes a set of subjects from the HashMap and converts to an Array which it returns for use
