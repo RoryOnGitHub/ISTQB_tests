@@ -114,13 +114,15 @@ public class TestRunner {
             while (true) {
                 if (usersAnswer.equals("A") || usersAnswer.equals("B") || usersAnswer.equals("C") || usersAnswer.equals("D")) {
                     int indexOfAnswer = choices.indexOf(usersAnswer);
+                    if (optionSelector.contains(indexOfAnswer)) {
+                        questionAttempts++;
+                    }
                     optionSelector.remove((Integer)indexOfAnswer);
                     if (QuestionOptions.getOptions().get(currentQuestion)[indexOfAnswer].equals(Answers.getAnswers().get(currentQuestion))) {
                         System.out.println("That is correct!");
                         TimeUnit.SECONDS.sleep(2);      //A pause so that you can read that you have gotten the question correct
                         break;
                     } else {
-                        questionAttempts++;
                         questionPrinter(currentQuestion, optionSelector);
                         System.out.println("That is not correct try again:");
                         System.out.println("Attempts so far: " + questionAttempts + "/" + "3");
@@ -199,56 +201,35 @@ public class TestRunner {
     }
     // Takes in the total amount of questions provided and the amount of subjects provided and returns an Array with an even split i.e., (3, 3, 3)
     public static ArrayList<Integer> questionSubjectSplit(int totalAmountQuestions, int subjects) { // Change subjects to ArrayList<String>
-//        int remainder = totalAmountQuestions % subjects;
         ArrayList<Integer> groupSplit = new ArrayList<>();
-//        if (remainder != 0) {
-//            for (int i = 0; i < subjects - 1; i++) {
-//                groupSplit.add((totalAmountQuestions - remainder) / subjects);
-//            }
-//            groupSplit.add(((totalAmountQuestions - remainder) / subjects) + remainder);
-//        } else if (totalAmountQuestions > subjects) {
-//            for (int i = 0; i < totalAmountQuestions; i++) {
-//                groupSplit.add(totalAmountQuestions / subjects);
-//            }
-//        } else if (totalAmountQuestions < subjects) {
-//            for (int i = 0; i < totalAmountQuestions; i++) {
-//                groupSplit.add(subjects / totalAmountQuestions);
-//            }
-//        }
-//        ---------------------Here
-//        if (totalAmountQuestions > subjects) {      // if 6 > 2 NEEDS FIXING with the example scenario
-//            if (subjects % totalAmountQuestions == 0) { // 2 % 6 = 2
-//                for (int i = 0; i < totalAmountQuestions; i++) {
-//                    groupSplit.add(subjects / totalAmountQuestions);
-//                }
-//            } else {
-//                int x = totalAmountQuestions - (subjects / totalAmountQuestions);  // 20 - (20/5)
-//                int y = subjects / totalAmountQuestions;   // 4
-//                for (int i = 0; i < totalAmountQuestions; i++) {
-//                    if (i >= x) {      // 0, 1, 2, 3, 4
-//                        groupSplit.add(y + 1);
-//                    } else {
-//                        groupSplit.add(y);
-//                    }
-//                }
-//            }
-//        } else {
-//            for (int i = 0; i < totalAmountQuestions; i++) {
-//                groupSplit.add(1);
-//            }
-//        }
         if (totalAmountQuestions > subjects) {
-            for (int i = 0; i < subjects; i++) {
-                groupSplit.add(totalAmountQuestions / subjects);
-            }
-        } else if (totalAmountQuestions % 2 != 0) {
-            int remainder = totalAmountQuestions % subjects;
-            for (int i = 0; i < subjects - 1; i++) {
-                groupSplit.add((totalAmountQuestions - remainder) / subjects);
-            }
-            groupSplit.add(remainder);
-        }
+            if (totalAmountQuestions % 2 == 0) {
+                int extraQuestions = totalAmountQuestions - subjects;
+                for (int i = 0; i < subjects; i++) {
+                    if (extraQuestions != 0) {
+                        groupSplit.add((totalAmountQuestions / subjects) + 1);
+                        extraQuestions--;
+                    } else {
+                        groupSplit.add(totalAmountQuestions / subjects);
+                    }
+                }
+            } else {
+                int remainder = totalAmountQuestions % subjects;
+                for (int i = 0; i < subjects; i++) {
+                    if (remainder != 0) {
+                        groupSplit.add(((totalAmountQuestions - remainder) / subjects) + 1);
+                        remainder--;
+                    } else {
+                        groupSplit.add((totalAmountQuestions - remainder) / subjects);
+                    }
 
+                }
+            }
+        } else {
+            for (int i = 0; i < totalAmountQuestions; i++) {
+                groupSplit.add(1);
+            }
+        }
         return groupSplit;
     }
     // Takes a set of subjects from the HashMap and converts to an Array which it returns for use
@@ -289,6 +270,10 @@ public class TestRunner {
             if (subjects.size() == 0 || chosenSubjects.size() == totalQuestions) {
                 break;
             }
+//            for (String subject : chosenSubjects) { // evaluate total questions available is equal or lower than total questions
+//                int amountPerCategory = QuestionBank.getQuestionsBySubject().get(subject).length;       // if one subject has lower amount than in its split, perhaps take from one with extra? By adding to its index in the split
+//            }
+
             if (quitOrContinueOptions("continue adding subjects?") == 2) {
                 break;
             }
@@ -331,12 +316,14 @@ public class TestRunner {
         }
         return returnOption;
     }
-    // Takes in all the subjects (subjectsSetToArray) and the total questions, if total questions is less than subject count it does 1 question per subject else it splits them evenly
+    // Takes in all the subjects (subjectsSetToArray) and the total questions, if total questions is less than subject count it does 1 subject per question else it splits them evenly, it chooses them randomly when the questions are less than the subjects
     public static ArrayList<String> defaultSubjects(ArrayList<String> subjectsArray, int totalQuestions) {
         ArrayList<String> defaultChoices = new ArrayList<String>();
         if (subjectsArray.size() > totalQuestions) {
             for(int i = 0; i < totalQuestions; i++) {
-                defaultChoices.add(subjectsArray.get(i));
+                int randomIndex = (int) (Math.random() * subjectsArray.size());
+                defaultChoices.add(subjectsArray.get(randomIndex));
+                subjectsArray.remove(randomIndex);
         }
             return defaultChoices;
         } else {
