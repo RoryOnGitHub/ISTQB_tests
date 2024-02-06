@@ -8,19 +8,7 @@ public class TestRunner {
 
         int usersTotalQuestions = 0;
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.println("How many questions in total would you like? (Choose a number between 1 and 40)");
-            try {
-                usersTotalQuestions = Integer.parseInt(scanner.nextLine());
-                if (usersTotalQuestions > 0 && usersTotalQuestions <= 40) {
-                    break;
-                } else {
-                    System.out.println("You must choose a number between 0 and 40 ");
-                }
-            } catch (NumberFormatException e){
-                System.out.println("You must choose a number between 0 and 40 ");
-            }
-        }
+
 
         // Have a HashMap initiated here to collect the attempts per category
         HashMap<String, Integer> attemptsPerCategory = new HashMap<String, Integer>();
@@ -29,11 +17,26 @@ public class TestRunner {
 
         ArrayList<String> questions = null;
         ArrayList<String> result = null;
+        HashMap<String, Integer> subjectChoiceResult = null;
         ArrayList<Integer> split = null;
         while (true) {
             System.out.println("Would you like to choose your own subjects? (Y/N)? ");
             String subjectOption = scanner.nextLine();
             if (subjectOption.equalsIgnoreCase("N")) {
+                while (true) {
+                    System.out.println("How many questions in total would you like? (Choose a number between 1 and 40)");
+                    try {
+                        usersTotalQuestions = Integer.parseInt(scanner.nextLine());
+                        if (usersTotalQuestions > 0 && usersTotalQuestions <= 40) {
+                            break;
+                        } else {
+                            System.out.println("You must choose a number between 0 and 40 ");
+                        }
+                    } catch (NumberFormatException e){
+                        System.out.println("You must choose a number between 0 and 40 ");
+                    }
+                }
+
                 // Default option for subject selection
                 result = defaultSubjects(subjectSetToArray(), usersTotalQuestions);
                 split = questionSubjectSplit(usersTotalQuestions, result.size(), true);
@@ -43,9 +46,16 @@ public class TestRunner {
                 break;
             } else if (subjectOption.equalsIgnoreCase("Y")){
                 // Subject printer (The subjects will be the categories) returns an array of chosen subjects
-                result = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
-                // Getting a good split of questions per subject returning this as an array
-                split = questionSubjectSplit(usersTotalQuestions, result.size(), false);
+                subjectChoiceResult = subjectPrinter(subjectSetToArray(), usersTotalQuestions);
+                // Process subjectChoiceResult HashMap to get the result and split Arraylist
+                result = new ArrayList<>();
+                split = new ArrayList<>();
+                for (Map.Entry<String, Integer> entry : subjectChoiceResult.entrySet()) {
+                    String key = entry.getKey();
+                    Integer value = entry.getValue();
+                    result.add(key);
+                    split.add(value);
+                }
                 // Adds the subjects and a starting attempt of 0 as a value for each, so they can then be added to later
                 Reporter.categoryStats(result, attemptsPerCategory, questionsPerCategory, split);
                 // The question randomizer takes in the (questionSubjectSplit) Array and the (subjectPrinter) Array and returns an Array of all questions   needs if for default options
@@ -106,7 +116,7 @@ public class TestRunner {
             // Initial method call for printing out the question
             questionPrinter(currentQuestion, null);
 
-            System.out.println("Please type your answer here (a,b,c,d): "); // Deal with say option A if it has been removed etc and if so when it is re-entered then its ignored.
+            System.out.println("Please type your answer here (a,b,c,d): ");
             String usersAnswer = scanner.nextLine().toUpperCase();
             ArrayList<Integer> optionSelector = new ArrayList<Integer>();
             Collections.addAll(optionSelector, 0, 1, 2, 3);
@@ -116,15 +126,16 @@ public class TestRunner {
             while (true) {
                 if (usersAnswer.equals("A") || usersAnswer.equals("B") || usersAnswer.equals("C") || usersAnswer.equals("D")) {
                     int indexOfAnswer = choices.indexOf(usersAnswer);
-                    if (optionSelector.contains(indexOfAnswer)) {
-                        questionAttempts++;
-                    }
+
                     optionSelector.remove((Integer)indexOfAnswer);
                     if (QuestionOptions.getOptions().get(currentQuestion)[indexOfAnswer].equals(Answers.getAnswers().get(currentQuestion))) {
                         System.out.println("That is correct!");
                         TimeUnit.SECONDS.sleep(2);      //A pause so that you can read that you have gotten the question correct
                         break;
                     } else {
+                        if (!optionSelector.contains(indexOfAnswer)) {
+                            questionAttempts++;
+                        }
                         questionPrinter(currentQuestion, optionSelector);
                         System.out.println("That is not correct try again:");
                         System.out.println("Attempts so far: " + questionAttempts + "/" + "3");
@@ -266,42 +277,52 @@ public class TestRunner {
         return subjects;
     }
     // Takes an Array of all the subjects and gets the user to select which ones they want then returns an Array of chosen subjects
-    public static ArrayList<String> subjectPrinter(ArrayList<String> subjects, int totalQuestions) {
-        ArrayList<String> chosenSubjects = new ArrayList<>();
+    public static HashMap<String, Integer> subjectPrinter(ArrayList<String> subjects, int totalQuestions) {
+        HashMap<String, Integer> chosenSubjectsCount = new HashMap<String, Integer>();
         while(true) {
             seperatorPrinter(4);
-            if (chosenSubjects.size() == totalQuestions || subjects.size() == 0) {
+            if (subjects.size() == 0) {
                 break;
             }
             Scanner scanner = new Scanner(System.in);
             headerPrinter("Select which subjects you would like in your test:");
             for (int i = 0; i < subjects.size(); i++) {
-                System.out.println(i + ": " + subjects.get(i));
+                System.out.println(i + ": " + subjects.get(i) + "  Amount of questions within this category: " + QuestionBank.getQuestionsBySubject().get(subjects.get(i)).length);
             }
             System.out.println("Select the subject by its allocated number (eg: 1):");
             try {
                 int selectedSubject = Integer.parseInt(scanner.nextLine());
                 if (selectedSubject < subjects.size()) {
-                    chosenSubjects.add(subjects.get(selectedSubject));
-                    subjects.remove(subjects.get(selectedSubject));
+                    // Add to the categories and question numbers to a HashMap which will be used to create the result and split
+                    int count = (QuestionBank.getQuestionsBySubject().get(subjects.get(selectedSubject)).length);
+                    System.out.println("| " +subjects.get(selectedSubject) + " |" + "   contains " + count + " questions, please enter in the number of questions you would like: ");
+                    int questionCountChoice = Integer.parseInt(scanner.nextLine());
+                    if (questionCountChoice < 0 || questionCountChoice > count) {
+                        while (true) {
+                            System.out.println("This number is out of range, please enter a number equal to or less than " + count);
+                            questionCountChoice = Integer.parseInt(scanner.nextLine());
+                            if (questionCountChoice > 0 && questionCountChoice <= count) {
+                                chosenSubjectsCount.put(subjects.get(selectedSubject),questionCountChoice);
+                                subjects.remove(subjects.get(selectedSubject));
+                                break;
+                            }
+                        }
+                    } else {
+                        chosenSubjectsCount.put(subjects.get(selectedSubject),questionCountChoice);
+                        subjects.remove(subjects.get(selectedSubject));
+                    }
+
                 } else {
                     System.out.println("Subject not found, please enter a number within the range presented");
                 }
             }catch (NumberFormatException e) {
                 System.out.println("That is not a listed number, please enter a number within the range presented");
             }
-            if (subjects.size() == 0 || chosenSubjects.size() == totalQuestions) {
-                break;
-            }
-//            for (String subject : chosenSubjects) { // evaluate total questions available is equal or lower than total questions
-//                int amountPerCategory = QuestionBank.getQuestionsBySubject().get(subject).length;       // if one subject has lower amount than in its split, perhaps take from one with extra? By adding to its index in the split
-//            }
-
-            if (quitOrContinueOptions("continue adding subjects?") == 2) {
+            if (quitOrContinueOptions("continue adding subjects") == 2) {
                 break;
             }
         }
-        return chosenSubjects;
+        return chosenSubjectsCount;
     }
     // Takes in an array with the questions evenly split  for each subject i.e., (3, 3, 4) and an Array of the subjects chosen, then creates an ArrayList of random questions
     public static ArrayList<String> questionRandomizer(ArrayList<Integer> splitOfSubjects, ArrayList<String> subjects) {
