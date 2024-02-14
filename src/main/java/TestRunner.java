@@ -292,12 +292,12 @@ public class TestRunner {
             System.out.println("Select the subject by its allocated number (eg: 1):");
             try {
                 int selectedSubject = Integer.parseInt(scanner.nextLine());
-                if (selectedSubject < subjects.size()) {
+                if (selectedSubject < subjects.size() && selectedSubject >= 0) {
                     // Add to the categories and question numbers to a HashMap which will be used to create the result and split
                     int count = (QuestionBank.getQuestionsBySubject().get(subjects.get(selectedSubject)).length);
                     System.out.println("| " +subjects.get(selectedSubject) + " |" + "   contains " + count + " questions, please enter in the number of questions you would like: ");
                     int questionCountChoice = Integer.parseInt(scanner.nextLine());
-                    if (questionCountChoice < 0 || questionCountChoice > count) {
+                    if (questionCountChoice <= 0 || questionCountChoice > count) {
                         while (true) {
                             System.out.println("This number is out of range, please enter a number equal to or less than " + count);
                             questionCountChoice = Integer.parseInt(scanner.nextLine());
